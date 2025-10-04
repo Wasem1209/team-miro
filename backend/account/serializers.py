@@ -1,13 +1,29 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import CustomUser, PaymentMethod, DriverLicence
+from django.conf import settings
 
 class CustomUserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     token = serializers.SerializerMethodField()
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'firstname', 'lastname', 'password', 'profile_photo', 'address', 'phone_numer', 'gender', 'created_at', 'updated_at']
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'token', 'password', 'profile_photo', 'address', 'phone_number', 'gender', 'created_at', 'updated_at']
+
+    def create(self, validated_data):
+        user = CustomUser.objects.create_user(
+            username=validated_data['username'],
+            email=validated_data['email'],
+            password=validated_data['password']
+        )
+        return user
+    
+    def get_token(self, user):
+        refresh = RefreshToken.for_user(user)
+        return {
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+        }
 
 
 class LogoutSerializer(serializers.Serializer):

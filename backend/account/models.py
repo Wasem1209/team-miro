@@ -13,7 +13,7 @@ class CustomUser(AbstractUser):
     address = models.CharField(max_length=100)
     phone_number = models.CharField(max_length=100)
     gender = models.CharField(choices=CHOICES)
-    profile_photo = models.ImageField(upload_to='media/profile_photos/', blank=False)
+    profile_photo = models.ImageField(upload_to='media/profile_photos/', blank=True, default=None, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
