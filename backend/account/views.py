@@ -14,6 +14,11 @@ class RegisterView(generics.CreateAPIView):
     viewsets = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
     permission_classes = [AllowAny]
+
+    def perform_create(self, serializer):
+        user = serializer.save()
+        token_data = serializer.get_token(user)
+        self.headers['Authorization'] = f'Bearer {token_data["access"]}'
     
 class LogoutView(APIView):
     permission_classes = (IsAuthenticated,) 
