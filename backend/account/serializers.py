@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework_simplejwt.tokens import RefreshToken
 from .models import CustomUser, PaymentMethod, DriverLicence
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -7,6 +8,24 @@ class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = ['id', 'username', 'firstname', 'lastname', 'password', 'profile_photo', 'address', 'phone_numer', 'gender', 'created_at', 'updated_at']
+
+
+class LogoutSerializer(serializers.Serializer):
+    refresh = serializers.CharField()
+    
+    default_error_messages = {
+        'bad_token': ('Token is expired or invalid')
+    }
+
+    def validate(self, attrs):
+        self.token = attrs['refresh']
+        return attrs
+
+    def save(self, **kwargs):
+        try:
+            RefreshToken(self.token).blacklist()
+        except Exception:
+            self.fail('bad_token')
 
 class PaymentMethodSerializer(serializers.ModelSerializer):
     user = CustomUserSerializer()
