@@ -2,6 +2,7 @@ from rest_framework import viewsets
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
+from utils.permissions import IsAdminOrSelf
 from .models import CustomUser, PaymentMethod, DriverLicence
 from .serializers import CustomUserSerializer, LogoutSerializer, PaymentMethodSerializer, DriverLicenceSerializer
 from rest_framework.response import Response
@@ -11,7 +12,7 @@ from rest_framework import status
 Authentication View
 '''
 class RegisterView(generics.CreateAPIView):
-    viewsets = CustomUser.objects.all()
+    queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
     permission_classes = [AllowAny]
 
@@ -28,6 +29,23 @@ class LogoutView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(status=status.HTTP_205_RESET_CONTENT)
+    
+'''
+CRUD operation for user profile
+'''
+class CustomUserViewSet(viewsets.ModelViewSet):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer
+    permission_classes = [IsAuthenticated, IsAdminOrSelf]
+
+    def get_queryset(self):
+        user = self.request.user
+
+        if user.is_superuser:
+            return CustomUser.objects.all()
+        else:    
+            return CustomUser.objects.filter(pk=user.pk)
+
 
 '''
 Viewsets for the payment method
