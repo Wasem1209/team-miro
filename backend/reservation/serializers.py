@@ -10,3 +10,11 @@ class ReservationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reservation
         fields = '__all__'
+
+    def get_fields(self):
+        fields = super().get_fields()
+        request = self.context.get('request', None)
+        if request and not request.user.is_staff:
+            fields['reservation_type'].read_only = True
+            fields['status'].read_only = True
+        return fields
