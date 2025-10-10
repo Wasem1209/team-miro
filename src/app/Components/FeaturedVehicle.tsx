@@ -96,7 +96,7 @@ const FeaturedVehicle: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen py-12 px-4">
+    <div className="min-h-screen py-12 px-4 bg-white">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl font-bold text-black mb-4">Featured Cars</h1>
         <h2 className="text-lg text-black font-bold mb-12">Choose from our premium fleet of well-maintained vehicles</h2>
