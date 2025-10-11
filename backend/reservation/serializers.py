@@ -5,7 +5,6 @@ from car.serializers import CarSerializer
 
 class ReservationSerializer(serializers.ModelSerializer):
     user = CustomUserSerializer(read_only=True)
-    car = CarSerializer(read_only=True, many=True)
 
     class Meta:
         model = Reservation

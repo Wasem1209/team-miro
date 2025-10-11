@@ -1,6 +1,7 @@
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .serializers import ReservationSerializer
 from .models import Reservation
 from utils.permissions import IsAdminOrSelf
@@ -45,6 +46,7 @@ class ReservationUpdateAPIView(generics.UpdateAPIView):
         else:
             serializer.save()
 
+# to get a particular reservation
 class ReservationRetrieveAPIView(generics.RetrieveAPIView):
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
@@ -56,7 +58,7 @@ class ReservationListAPIView(generics.ListAPIView):
     serializer_class = ReservationSerializer
     permission_classes = [IsAdminOrSelf]
 
-    def get_querryset(self):
+    def get_queryset(self):
         user = self.request.user
 
         if user.is_superuser:
@@ -64,7 +66,7 @@ class ReservationListAPIView(generics.ListAPIView):
         else:
             return Reservation.objects.filter(pk=user.pk)
 
-# Cancel reservation API
+# to cancel a reservation
 class ReservationCancelAPIView(APIView):
     permission_classes = [IsAdminOrSelf]
 
@@ -80,3 +82,20 @@ class ReservationCancelAPIView(APIView):
         reservation.status = 'cancelled'
         reservation.save()
         return Response({'detail': 'Reservation cancelled.'}, status=status.HTTP_200_OK)
+
+# to confirm a reservation
+class ReservationConfirmAPIView(APIView):
+    permission_classes = [IsAuthenticated, IsAdminUser]
+
+    def post(self, request, pk):
+        try:
+            reservation = Reservation.objects.get(pk=pk)
+        except Reservation.DoesNotExist:
+            return Response({'detail': 'Reservation not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Check permission
+        self.check_object_permissions(request, reservation)
+
+        reservation.status = 'confirmed'
+        reservation.save()
+        return Response({'detail': 'Reservation confirmed.'}, status=status.HTTP_200_OK)
