@@ -25,7 +25,7 @@ STATUS_EMAILS = {
 @receiver(pre_save, sender=Reservation)
 def send_reservation_status_email(sender, instance, **kwargs):
     if not instance.pk:
-        return  # New object, not an update
+        return
     try:
         old = sender.objects.get(pk=instance.pk)
     except sender.DoesNotExist:
