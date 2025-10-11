@@ -11,7 +11,7 @@ class CustomUser(AbstractUser):
         ('female', 'Female'),
     )
     
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     address = models.CharField(max_length=100)
     phone_number = models.CharField(max_length=100)
     gender = models.CharField(choices=CHOICES, max_length=20)
