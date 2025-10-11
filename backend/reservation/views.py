@@ -6,7 +6,7 @@ from .serializers import ReservationSerializer
 from .models import Reservation
 from utils.permissions import IsAdminOrSelf
 
-
+# to create a reservation
 class ReservationCreateAPIView(generics.CreateAPIView):
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
@@ -33,6 +33,7 @@ class ReservationCreateAPIView(generics.CreateAPIView):
         else:
             serializer.save(reservation_type='soft', status='pending')
 
+# to update a reservation
 class ReservationUpdateAPIView(generics.UpdateAPIView):
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
@@ -52,7 +53,7 @@ class ReservationRetrieveAPIView(generics.RetrieveAPIView):
     serializer_class = ReservationSerializer
     permission_classes = [IsAdminOrSelf]
 
-
+# to get the list of all reservations
 class ReservationListAPIView(generics.ListAPIView):
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
