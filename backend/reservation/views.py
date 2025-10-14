@@ -2,6 +2,7 @@ from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework import filters
 from .serializers import ReservationSerializer
 from .models import Reservation
 from utils.permissions import IsAdminOrSelf
@@ -27,7 +28,7 @@ class ReservationCreateAPIView(generics.CreateAPIView):
                 end_date__gt=start_date
             )
             for guest_res in overlaps:
-                guest_res.status = 'cancelled'
+                guest_res.status = 'overridden'
                 guest_res.save()
             serializer.save(user=user, reservation_type='firm', status='pending')
         else:
@@ -58,6 +59,9 @@ class ReservationListAPIView(generics.ListAPIView):
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
     permission_classes = [IsAdminOrSelf]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['id', 'user', 'car', 'status']
+    ordering_fields = ['created_at']
 
     def get_queryset(self):
         user = self.request.user
@@ -65,7 +69,7 @@ class ReservationListAPIView(generics.ListAPIView):
         if user.is_superuser:
             return Reservation.objects.all()
         else:
-            return Reservation.objects.filter(pk=user.pk)
+            return Reservation.objects.filter(user=user)
 
 # to cancel a reservation
 class ReservationCancelAPIView(APIView):

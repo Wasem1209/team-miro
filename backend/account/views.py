@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from utils.permissions import IsAdminOrSelf
 from .models import CustomUser, PaymentMethod, DriverLicence
-from .serializers import CustomUserSerializer, LogoutSerializer, PaymentMethodSerializer, DriverLicenceSerializer
+from .serializers import CustomUserSerializer, PaymentMethodSerializer, DriverLicenceSerializer
 from rest_framework.response import Response
 from rest_framework import status
     

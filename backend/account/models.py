@@ -12,6 +12,7 @@ class CustomUser(AbstractUser):
     )
     
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
+    email = models.EmailField(unique=True, blank=False, null=False)
     address = models.CharField(max_length=100)
     phone_number = models.CharField(max_length=100)
     gender = models.CharField(choices=CHOICES, max_length=20)
@@ -23,18 +24,34 @@ class PaymentMethod(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
-    card_number = models.CharField(max_length=100)
+    card_number = models.CharField(max_length=100, unique=True)
     security_code = models.CharField(max_length=20)
     expiring_date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['user']),
+            models.Index(fields=['name']),
+            models.Index(fields=['card_number']),
+        ]
+
 class DriverLicence(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    license_number = models.CharField(max_length=50)
+    name = models.CharField(max_length=100)
+    license_number = models.CharField(max_length=50, unique=True)
     issuing_authority = models.CharField(max_length=50)
     issue_date = models.DateField()
     expiring_date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['user']),
+            models.Index(fields=['model']),
+            models.Index(fields=['name']),
+            models.Index(fields=['license_number']),
+        ]

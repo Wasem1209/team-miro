@@ -54,3 +54,12 @@ class Car(models.Model):
     photo = models.ImageField(upload_to='media/car_photos/', blank=False, default=None)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['name']),
+            models.Index(fields=['model']),
+            models.Index(fields=['year']),
+            models.Index(fields=['colour']),
+            models.Index(fields=['car_type']),
+        ]
