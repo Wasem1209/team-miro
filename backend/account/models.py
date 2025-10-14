@@ -22,11 +22,11 @@ class CustomUser(AbstractUser):
 
 class PaymentMethod(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=False, null=False)
     name = models.CharField(max_length=100)
-    card_number = models.CharField(max_length=100, unique=True)
-    security_code = models.CharField(max_length=20)
-    expiring_date = models.DateField()
+    card_number = models.CharField(max_length=100, unique=True, blank=False, null=False)
+    security_code = models.CharField(max_length=20, blank=False, null=False)
+    expiring_date = models.DateField(blank=False, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -39,19 +39,18 @@ class PaymentMethod(models.Model):
 
 class DriverLicence(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-    license_number = models.CharField(max_length=50, unique=True)
-    issuing_authority = models.CharField(max_length=50)
-    issue_date = models.DateField()
-    expiring_date = models.DateField()
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, blank=False, null=False)
+    name = models.CharField(max_length=100, blank=False, null=False)
+    license_number = models.CharField(max_length=50, unique=True, blank=False, null=False)
+    issuing_authority = models.CharField(max_length=50, blank=False, null=False)
+    issue_date = models.DateField(blank=False, null=False)
+    expiring_date = models.DateField(blank=False, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         indexes = [
             models.Index(fields=['user']),
-            models.Index(fields=['model']),
             models.Index(fields=['name']),
             models.Index(fields=['license_number']),
         ]

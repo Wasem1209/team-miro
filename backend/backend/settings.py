@@ -15,6 +15,7 @@ from datetime import timedelta
 import os
 from dotenv import load_dotenv
 
+
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -48,6 +49,8 @@ INSTALLED_APPS = [
     'account',
     'car',
     'reservation.apps.ReservationConfig',
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
 ]
 
 MIDDLEWARE = [
@@ -86,14 +89,13 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get('DB_NAME'),
+        "NAME": os.environ.get('DB_DATABASE'),
         "USER": os.environ.get('DB_USER'),
         "PASSWORD": os.environ.get('DB_PASSWORD'),
         "HOST": os.environ.get('DB_HOST'),
         "PORT": os.environ.get('DB_PORT'),
     }
 }
-
 
 # DATABASES = {
 #     'default': {
@@ -152,7 +154,9 @@ REST_FRAMEWORK = {
     ),
 
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 20
+    'PAGE_SIZE': 20,
+
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 SIMPLE_JWT = {
@@ -182,4 +186,14 @@ DJOSER = {
         'token': 'djoser.serializers.TokenSerializer',
     },
     'TOKEN_MODEL': None,
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Car Rental App API',
+    'DESCRIPTION': 'The custom built API for the EasyDrive car rental web app',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SWAGGER_UI_DIST': 'SIDECAR',
+    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
+    'REDOC_DIST': 'SIDECAR'
 }
