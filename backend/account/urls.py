@@ -4,8 +4,8 @@ from .views import CustomUserViewSet, PaymentMethodViewSet, DriverLicenceViewSet
 
 router = DefaultRouter()
 router.register(r'users', CustomUserViewSet)
-router.register(r'PaymentMethod', PaymentMethodViewSet)
-router.register(r'DriverLicence', DriverLicenceViewSet)
+router.register(r'paymentmethod', PaymentMethodViewSet)
+router.register(r'driverlicense', DriverLicenceViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
