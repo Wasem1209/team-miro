@@ -1,4 +1,5 @@
 from rest_framework import generics
+from rest_framework import filters
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from .serializers import CarSerializer
 from .models import Car
@@ -16,6 +17,9 @@ class CarListAPIView(generics.ListAPIView):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
     permission_classes = [AllowAny]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['name', 'model', 'year', 'colour', 'pickup_location', 'car_type', 'status', 'seating_capacity', 'luggage_capacity', 'fuel_type', 'transmission']
+    ordering_fields = ['name', 'status', 'year', 'created_at']
 
 # Returns a particular user
 class CarRetrieveAPIView(generics.RetrieveAPIView):
