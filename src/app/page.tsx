@@ -6,7 +6,6 @@ import HowItWorks from "./Components/HowItWorks";
 import Newsletter from "./Components/Newsletter";
 
 
-
 export default function Home() {
     return (
         <main>

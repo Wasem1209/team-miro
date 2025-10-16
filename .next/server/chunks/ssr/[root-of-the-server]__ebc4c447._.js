@@ -457,11 +457,14 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$t
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/team-miro/team-miro/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/team-miro/team-miro/node_modules/next/image.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$heart$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Heart$3e$__ = __turbopack_context__.i("[project]/Desktop/team-miro/team-miro/node_modules/lucide-react/dist/esm/icons/heart.js [app-ssr] (ecmascript) <export default as Heart>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/Desktop/team-miro/team-miro/node_modules/next/navigation.js [app-ssr] (ecmascript)");
+;
 ;
 ;
 ;
 ;
 const FeaturedVehicle = ()=>{
+    const Router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useRouter"])();
     const [cars, setCars] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([
         {
             id: '1',
@@ -550,7 +553,7 @@ const FeaturedVehicle = ()=>{
                         children: "Featured Cars"
                     }, void 0, false, {
                         fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                        lineNumber: 101,
+                        lineNumber: 103,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -558,7 +561,7 @@ const FeaturedVehicle = ()=>{
                         children: "Choose from our premium fleet of well-maintained vehicles"
                     }, void 0, false, {
                         fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                        lineNumber: 102,
+                        lineNumber: 104,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -577,7 +580,7 @@ const FeaturedVehicle = ()=>{
                                                 className: "w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                                                lineNumber: 112,
+                                                lineNumber: 114,
                                                 columnNumber: 17
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             car.available && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -587,12 +590,12 @@ const FeaturedVehicle = ()=>{
                                                     children: "Available"
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                                                    lineNumber: 123,
+                                                    lineNumber: 125,
                                                     columnNumber: 21
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                                                lineNumber: 122,
+                                                lineNumber: 124,
                                                 columnNumber: 19
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -603,18 +606,18 @@ const FeaturedVehicle = ()=>{
                                                     fill: car.isFavorite ? 'currentColor' : 'none'
                                                 }, void 0, false, {
                                                     fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                                                    lineNumber: 134,
+                                                    lineNumber: 136,
                                                     columnNumber: 19
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                                                lineNumber: 130,
+                                                lineNumber: 132,
                                                 columnNumber: 17
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                                        lineNumber: 111,
+                                        lineNumber: 113,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -628,7 +631,7 @@ const FeaturedVehicle = ()=>{
                                                         children: car.name
                                                     }, void 0, false, {
                                                         fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                                                        lineNumber: 145,
+                                                        lineNumber: 147,
                                                         columnNumber: 19
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -642,7 +645,7 @@ const FeaturedVehicle = ()=>{
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                                                                lineNumber: 147,
+                                                                lineNumber: 149,
                                                                 columnNumber: 21
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -650,19 +653,19 @@ const FeaturedVehicle = ()=>{
                                                                 children: "per day"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                                                                lineNumber: 150,
+                                                                lineNumber: 152,
                                                                 columnNumber: 21
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                                                        lineNumber: 146,
+                                                        lineNumber: 148,
                                                         columnNumber: 19
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                                                lineNumber: 144,
+                                                lineNumber: 146,
                                                 columnNumber: 17
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -679,12 +682,12 @@ const FeaturedVehicle = ()=>{
                                                                     height: 16
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                                                                    lineNumber: 158,
+                                                                    lineNumber: 160,
                                                                     columnNumber: 23
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                                                                lineNumber: 157,
+                                                                lineNumber: 159,
                                                                 columnNumber: 21
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -694,13 +697,13 @@ const FeaturedVehicle = ()=>{
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                                                                lineNumber: 160,
+                                                                lineNumber: 162,
                                                                 columnNumber: 21
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                                                        lineNumber: 156,
+                                                        lineNumber: 158,
                                                         columnNumber: 19
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -714,25 +717,25 @@ const FeaturedVehicle = ()=>{
                                                                     height: 16
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                                                                    lineNumber: 164,
+                                                                    lineNumber: 166,
                                                                     columnNumber: 23
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                                                                lineNumber: 163,
+                                                                lineNumber: 165,
                                                                 columnNumber: 21
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                 children: car.transmission
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                                                                lineNumber: 166,
+                                                                lineNumber: 168,
                                                                 columnNumber: 21
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                                                        lineNumber: 162,
+                                                        lineNumber: 164,
                                                         columnNumber: 19
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -746,43 +749,43 @@ const FeaturedVehicle = ()=>{
                                                                     height: 16
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                                                                    lineNumber: 170,
+                                                                    lineNumber: 172,
                                                                     columnNumber: 23
                                                                 }, ("TURBOPACK compile-time value", void 0))
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                                                                lineNumber: 169,
+                                                                lineNumber: 171,
                                                                 columnNumber: 21
                                                             }, ("TURBOPACK compile-time value", void 0)),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                 children: "Premium"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                                                                lineNumber: 172,
+                                                                lineNumber: 174,
                                                                 columnNumber: 21
                                                             }, ("TURBOPACK compile-time value", void 0))
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                                                        lineNumber: 168,
+                                                        lineNumber: 170,
                                                         columnNumber: 19
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                                                lineNumber: 155,
+                                                lineNumber: 157,
                                                 columnNumber: 17
                                             }, ("TURBOPACK compile-time value", void 0)),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "flex gap-2  items-center",
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                        onClick: ()=>handleReserve(car.name),
+                                                        onClick: ()=>Router.push("/soft-reserve"),
                                                         className: "flex-1 bg-black text-white font-semibold py-3 rounded hover:bg-gray-800 transition-colors",
                                                         children: "Reserve Now"
                                                     }, void 0, false, {
                                                         fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                                                        lineNumber: 178,
+                                                        lineNumber: 180,
                                                         columnNumber: 17
                                                     }, ("TURBOPACK compile-time value", void 0)),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -794,44 +797,45 @@ const FeaturedVehicle = ()=>{
                                                             height: 60
                                                         }, void 0, false, {
                                                             fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                                                            lineNumber: 185,
+                                                            lineNumber: 187,
                                                             columnNumber: 22
                                                         }, ("TURBOPACK compile-time value", void 0))
                                                     }, void 0, false, {
                                                         fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                                                        lineNumber: 184,
+                                                        lineNumber: 186,
                                                         columnNumber: 19
                                                     }, ("TURBOPACK compile-time value", void 0))
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                                                lineNumber: 177,
+                                                lineNumber: 179,
                                                 columnNumber: 17
                                             }, ("TURBOPACK compile-time value", void 0))
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                                        lineNumber: 142,
+                                        lineNumber: 144,
                                         columnNumber: 15
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, car.id, true, {
                                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                                lineNumber: 106,
+                                lineNumber: 108,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0)))
                     }, void 0, false, {
                         fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                        lineNumber: 104,
+                        lineNumber: 106,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                lineNumber: 100,
+                lineNumber: 102,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                onClick: ()=>Router.push("/cars"),
                 className: "border border-black rounded-full px-12 py-2 mt-6  items-center font-bold",
                 children: [
                     "See more ",
@@ -843,19 +847,19 @@ const FeaturedVehicle = ()=>{
                         className: "inline-block ml-2"
                     }, void 0, false, {
                         fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                        lineNumber: 193,
-                        columnNumber: 109
+                        lineNumber: 197,
+                        columnNumber: 104
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-                lineNumber: 193,
+                lineNumber: 195,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/Desktop/team-miro/team-miro/src/app/Components/FeaturedVehicle.tsx",
-        lineNumber: 99,
+        lineNumber: 101,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };
@@ -1231,38 +1235,38 @@ function Home() {
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$src$2f$app$2f$Components$2f$HeroSection$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                     fileName: "[project]/Desktop/team-miro/team-miro/src/app/page.tsx",
-                    lineNumber: 15,
+                    lineNumber: 14,
                     columnNumber: 15
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$src$2f$app$2f$Components$2f$FeaturedVehicle$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                     fileName: "[project]/Desktop/team-miro/team-miro/src/app/page.tsx",
-                    lineNumber: 16,
+                    lineNumber: 15,
                     columnNumber: 11
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$src$2f$app$2f$Components$2f$WhyChooseUs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                     fileName: "[project]/Desktop/team-miro/team-miro/src/app/page.tsx",
-                    lineNumber: 17,
+                    lineNumber: 16,
                     columnNumber: 17
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$src$2f$app$2f$Components$2f$HowItWorks$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                     fileName: "[project]/Desktop/team-miro/team-miro/src/app/page.tsx",
-                    lineNumber: 18,
+                    lineNumber: 17,
                     columnNumber: 17
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$src$2f$app$2f$Components$2f$Newsletter$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                     fileName: "[project]/Desktop/team-miro/team-miro/src/app/page.tsx",
-                    lineNumber: 19,
+                    lineNumber: 18,
                     columnNumber: 17
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/Desktop/team-miro/team-miro/src/app/page.tsx",
-            lineNumber: 14,
+            lineNumber: 13,
             columnNumber: 13
         }, this)
     }, void 0, false, {
         fileName: "[project]/Desktop/team-miro/team-miro/src/app/page.tsx",
-        lineNumber: 12,
+        lineNumber: 11,
         columnNumber: 9
     }, this);
 }
