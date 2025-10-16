@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { Heart } from 'lucide-react';
+import { Heart} from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 
 interface Car {
@@ -16,6 +17,7 @@ interface Car {
 }
 
 const FeaturedVehicle: React.FC = () => {
+  const Router = useRouter();
   const [cars, setCars] = useState<Car[]>([
     {
       id: '1',
@@ -176,7 +178,7 @@ const FeaturedVehicle: React.FC = () => {
                 {/* Reserve Button */}
                 <div className='flex gap-2  items-center'>
                 <button
-                  onClick={() => handleReserve(car.name)}
+                  onClick={() => Router.push("/soft-reserve")}
                   className="flex-1 bg-black text-white font-semibold py-3 rounded hover:bg-gray-800 transition-colors"
                 >
                   Reserve Now
@@ -190,7 +192,9 @@ const FeaturedVehicle: React.FC = () => {
           ))}
         </div>
       </div>
-      <button className='border border-black rounded-full px-12 py-2 mt-6  items-center font-bold'>See more <Image src={"/icon/RightArrow.png"} alt="right-arrow" width={40} height={40} className='inline-block ml-2'/></button>
+      <button
+        onClick={() => Router.push("/cars")}
+        className='border border-black rounded-full px-12 py-2 mt-6  items-center font-bold' >See more <Image src={"/icon/RightArrow.png"} alt="right-arrow" width={40} height={40} className='inline-block ml-2' /></button>
     </div>
   );
 };
