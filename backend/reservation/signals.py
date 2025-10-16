@@ -86,12 +86,3 @@ def send_reservation_status_email(sender, instance, **kwargs):
                 fail_silently=True,
             )
 
-def notify_guest_reservation_overridden(guest_email, car):
-    if guest_email and car:
-        send_mail(
-            subject=f'Your guest reservation for {car.name} has been overridden',
-            message=f'Your guest reservation for {car.name} has been overridden by a registered user. The car is no longer reserved for you.',
-            from_email=settings.EMAIL_HOST_USER,
-            recipient_list=[guest_email],
-            fail_silently=True,
-        )
