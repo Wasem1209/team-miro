@@ -24,29 +24,34 @@ export default function SoftReservePage() {
 
   // Fetch paginated cars from API
   useEffect(() => {
-    const fetchCars = async () => {
-      setLoading(true);
-      setError(null);
+  const fetchCars = async () => {
+    setLoading(true);
+    setError(null);
 
-      try {
-        const res = await fetch(`/api/cars?model=huracan&page=${page}&limit=9, {
-          cache: "no-store",
-        }`);
-        if (!res.ok) throw new Error("Failed to fetch cars");
-        const data = await res.json();
+    try {
+      const res = await fetch(`/api/cars?model=huracan&page=${page}&limit=9`, {
+        cache: "no-store",
+      });
 
-        // Use of API to return car page
-        setCars(data.cars);
-        setTotalPages(data.totalPages || 1);
-      } catch (err: any) {
+      if (!res.ok) throw new Error("Failed to fetch cars");
+
+      const data: { cars: CarItem[]; totalPages: number } = await res.json();
+
+      setCars(data.cars);
+      setTotalPages(data.totalPages || 1);
+    } catch (err) {
+      if (err instanceof Error) {
         setError(err.message);
-      } finally {
-        setLoading(false);
+      } else {
+        setError("An unknown error occurred");
       }
-    };
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchCars();
-  }, [page]);
+  fetchCars();
+}, [page]);
 
   const handlePageChange = (newPage: number) => {
     if (newPage < 1 || newPage > totalPages) return;
