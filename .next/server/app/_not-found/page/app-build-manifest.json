@@ -1,19 +1,20 @@
 {
   "pages": {
     "/_not-found/page": [
-      "static/chunks/2617e_next_dist_9d14db8c._.js",
-      "static/chunks/Desktop_team-miro_team-miro_src_app_favicon_ico_mjs_3be9db7f._.js",
-      "static/chunks/Desktop_team-miro_team-miro_src_app_globals_62f68adc.css",
-      "static/chunks/Desktop_team-miro_team-miro_src_app_layout_tsx_c9735c8f._.js",
-      "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_10dac33c._.js",
-      "static/chunks/2617e_next_dist_compiled_react-dom_bdae4e32._.js",
-      "static/chunks/2617e_next_dist_compiled_next-devtools_index_ca2f6a75.js",
-      "static/chunks/2617e_next_dist_compiled_9c48b47c._.js",
-      "static/chunks/2617e_next_dist_client_88f25ebe._.js",
-      "static/chunks/2617e_next_dist_46aaa721._.js",
-      "static/chunks/2617e_@swc_helpers_cjs_e6e265ea._.js",
-      "static/chunks/Desktop_team-miro_team-miro_a0ff3932._.js",
-      "static/chunks/turbopack-Desktop_team-miro_team-miro_4acfc6c5._.js"
+      "static/chunks/node_modules_next_dist_8db7fb1f._.js",
+      "static/chunks/src_app_favicon_ico_mjs_243aa161._.js",
+      "static/chunks/[root-of-the-server]__72aaf6ed._.css",
+      "static/chunks/_470816f0._.js",
+      "static/chunks/src_app_layout_tsx_0a548d63._.js",
+      "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_57d40746._.js",
+      "static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js",
+      "static/chunks/node_modules_next_dist_compiled_next-devtools_index_a9cb0712.js",
+      "static/chunks/node_modules_next_dist_compiled_5150ccfd._.js",
+      "static/chunks/node_modules_next_dist_client_cf1d9188._.js",
+      "static/chunks/node_modules_next_dist_b0daae9a._.js",
+      "static/chunks/node_modules_@swc_helpers_cjs_b3dc30d6._.js",
+      "static/chunks/_a0ff3932._.js",
+      "static/chunks/turbopack-_cdba956c._.js"
     ]
   }
 }
