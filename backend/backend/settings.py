@@ -31,7 +31,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS')]
+ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS'), 'localhost']
 
 # Application definition
 
@@ -87,7 +87,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
+        "ENGINE": "django.db.backends.mysql",
         "NAME": os.environ.get('DB_DATABASE'),
         "USER": os.environ.get('DB_USER'),
         "PASSWORD": os.environ.get('DB_PASSWORD'),
@@ -95,6 +95,7 @@ DATABASES = {
         "PORT": os.environ.get('DB_PORT'),
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -172,9 +173,9 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 DJOSER = {
-    'PASSWORD_RESET_CONFIRM_URL': 'api/account/auth/users/reset_password_confirm/{uid}/{token}/',
+    'PASSWORD_RESET_CONFIRM_URL': '/api/v1/account/auth/users/reset_password_confirm/{uid}/{token}/',
     'SEND_ACTIVATION_EMAIL': True,
-    'ACTIVATION_URL': 'api/account/auth/users/activate/{uid}/{token}',
+    'ACTIVATION_URL': '/api/v1/account/auth/users/activate/{uid}/{token}',
     'SERIALIZERS': {
         'user_create': 'djoser.serializers.UserCreateSerializer',
         'user': 'djoser.serializers.UserSerializer',
