@@ -1,19 +1,19 @@
 "use client";
 import React, { useState } from "react";
 
-interface PaymentScreenProps {
+type PaymentScreenProps = {
   carSelected?: string;
   pricePerDay?: number;
   rentalDuration?: number;
   onPaymentSuccess?: () => void;
-}
+};
 
-const PaymentScreen: React.FC<PaymentScreenProps> = ({
+export default function PaymentScreen({
   carSelected = "Lamborghini Huracán 2022",
   pricePerDay = 1200,
   rentalDuration = 2,
   onPaymentSuccess,
-}) => {
+}: PaymentScreenProps) {
   const [cardholderName, setCardholderName] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
@@ -163,8 +163,3 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
     </div>
   );
 };
-
-//  For correction 
-export default function PaymentPage() {
-  return <PaymentScreen />;
-}
