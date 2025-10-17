@@ -133,7 +133,7 @@ export default function PaymentPage() {
                 You have made a firm reservation
               </p>
               <p className="text-sm text-gray-600 mb-8">
-                You'll receive an email with your reservation details shortly.
+                {"You'll receive an email with your reservation details shortly."}
               </p>
               <div className="flex gap-3">
                 <button
