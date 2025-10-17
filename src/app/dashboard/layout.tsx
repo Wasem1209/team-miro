@@ -8,12 +8,12 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [isSidebarOpen] = useState(false);
+  const [] = useState(false);
 
   return (
     <div className="flex min-h-screen bg-gray-100">
       {/* Sidebar */}
-      <Sidebar isSidebarOpen={isSidebarOpen} />
+      <Sidebar  />
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col">
