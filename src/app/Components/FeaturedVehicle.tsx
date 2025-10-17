@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { Heart} from 'lucide-react';
@@ -93,9 +94,6 @@ const FeaturedVehicle: React.FC = () => {
     ));
   };
 
-  const handleReserve = (carName: string) => {
-    alert(`Reserved ${carName}!`);
-  };
 
   return (
     <div className="min-h-screen py-12 px-4 bg-white">
