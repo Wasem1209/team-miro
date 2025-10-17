@@ -1,26 +1,19 @@
-
 "use client";
+
 import React, { useState } from "react";
 
-type PaymentScreenProps = {
-  carSelected?: string;
-  pricePerDay?: number;
-  rentalDuration?: number;
-  onPaymentSuccess?: () => void;
-};
-
-export default function PaymentScreen({
-  carSelected = "Lamborghini Huracán 2022",
-  pricePerDay = 1200,
-  rentalDuration = 2,
-  onPaymentSuccess,
-}: PaymentScreenProps) {
+export default function PaymentPage() {
   const [cardholderName, setCardholderName] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
   const [cvv, setCvv] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+  // Static values for now
+  const carSelected = "Lamborghini Huracán 2022";
+  const pricePerDay = 1200;
+  const rentalDuration = 2;
 
   const rentalCharges = pricePerDay * rentalDuration;
   const deposit = 500;
@@ -31,7 +24,6 @@ export default function PaymentScreen({
     setTimeout(() => {
       setIsProcessing(false);
       setShowSuccessModal(true);
-      onPaymentSuccess?.();
     }, 2000);
   };
 
@@ -141,7 +133,7 @@ export default function PaymentScreen({
                 You have made a firm reservation
               </p>
               <p className="text-sm text-gray-600 mb-8">
-                {"You'll receive an email with your reservation details shortly"}
+                You'll receive an email with your reservation details shortly.
               </p>
               <div className="flex gap-3">
                 <button
