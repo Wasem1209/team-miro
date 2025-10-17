@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 
-type PaymentScreenProps = {
+type PaymentScreenP = {
   carSelected?: string;
   pricePerDay?: number;
   rentalDuration?: number;
@@ -162,4 +162,4 @@ export default function PaymentScreen({
       )}
     </div>
   );
-};
+}
