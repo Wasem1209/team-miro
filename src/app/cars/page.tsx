@@ -32,14 +32,19 @@ export default function SoftReservePage() {
         const res = await fetch(`/api/cars?model=huracan&page=${page}&limit=9, {
           cache: "no-store",
         }`);
-        if (!res.ok) throw new Error("Failed to fetch cars");
-        const data = await res.json();
 
-        // Use of API to return car page
+        if (!res.ok) throw new Error("Failed to fetch cars");
+
+        const data: { cars: CarItem[]; totalPages: number } = await res.json();
+
         setCars(data.cars);
         setTotalPages(data.totalPages || 1);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("An unknown error occurred");
+        }
       } finally {
         setLoading(false);
       }
@@ -48,6 +53,7 @@ export default function SoftReservePage() {
     fetchCars();
   }, [page]);
 
+  // Handle pagination change
   const handlePageChange = (newPage: number) => {
     if (newPage < 1 || newPage > totalPages) return;
     setPage(newPage);
@@ -55,7 +61,7 @@ export default function SoftReservePage() {
 
   return (
     <div className="min-h-screen bg-gray-50 px-4 md:px-10 py-8">
-      {/* the header */}
+      {/* Header */}
       <div className="text-left mb-6">
         <h1 className="text-3xl font-bold text-gray-800">
           Lamborghini Huracán{" "}
@@ -65,7 +71,7 @@ export default function SoftReservePage() {
         </h1>
       </div>
 
-      {/* The filter bar*/}
+      {/* Filter bar */}
       <div className="flex flex-wrap items-center gap-3 mb-8">
         {["Lamborghini", "Huracán", "Exotic", "2022", "$1200-1500", "Mon, Nov 3rd, 2025"].map(
           (filter, i) => (
@@ -79,21 +85,21 @@ export default function SoftReservePage() {
         )}
       </div>
 
-      {/* Loading from the backend */}
+      {/* Loading state */}
       {loading && (
         <div className="flex justify-center items-center py-20 text-gray-600 text-lg">
           Loading cars...
         </div>
       )}
 
-      {/* For erro message */}
+      {/* Error state */}
       {error && (
         <div className="flex justify-center items-center py-20 text-red-600 text-lg">
           Error: {error}
         </div>
       )}
 
-      {/* When there is no data found */}
+      {/* Empty state */}
       {!loading && !error && cars.length === 0 && (
         <div className="text-center text-gray-500 py-20">
           No cars available.
@@ -174,7 +180,7 @@ export default function SoftReservePage() {
         </div>
       )}
 
-      {/* Pgae pagination */}
+      {/* Pagination */}
       {!loading && totalPages > 1 && (
         <div className="flex justify-center items-center gap-2 mt-10">
           <button
