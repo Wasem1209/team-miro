@@ -1,7 +1,8 @@
+
 "use client";
 import React, { useState } from "react";
 
-type PaymentScreen = {
+type PaymentScreenProps = {
   carSelected?: string;
   pricePerDay?: number;
   rentalDuration?: number;
@@ -13,7 +14,7 @@ export default function PaymentScreen({
   pricePerDay = 1200,
   rentalDuration = 2,
   onPaymentSuccess,
-}: PaymentScreen) {
+}: PaymentScreenProps) {
   const [cardholderName, setCardholderName] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
