@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 
 interface PaymentScreenProps {
@@ -27,13 +27,10 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
 
   const handleConfirmPayment = () => {
     setIsProcessing(true);
-    // Simulate payment processing
     setTimeout(() => {
       setIsProcessing(false);
       setShowSuccessModal(true);
-      if (onPaymentSuccess) {
-        onPaymentSuccess();
-      }
+      onPaymentSuccess?.();
     }, 2000);
   };
 
@@ -44,7 +41,6 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
           {/* Left Side - Payment Details */}
           <div>
             <h2 className="text-2xl font-bold mb-6">Payment Details</h2>
-            
             <div className="space-y-3 mb-6">
               <p className="text-sm">
                 <span className="font-semibold">Car selected:</span> {carSelected}
@@ -56,7 +52,6 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
                 <span className="font-semibold">Rental Duration:</span> {rentalDuration} days
               </p>
             </div>
-
             <div className="border-t pt-4 space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="font-semibold">Rental Charges:</span>
@@ -76,61 +71,36 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
           {/* Right Side - Card Payment Form */}
           <div className="bg-gray-50 rounded-lg p-6">
             <h2 className="text-xl font-bold mb-6">Pay Securely with Your Card</h2>
-
             <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  CardHolderName
-                </label>
-                <input
-                  type="text"
-                  value={cardholderName}
-                  onChange={(e) => setCardholderName(e.target.value)}
-                  placeholder="John White"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-transparent outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Card Number
-                </label>
-                <input
-                  type="text"
-                  value={cardNumber}
-                  onChange={(e) => setCardNumber(e.target.value)}
-                  placeholder="1234 5678 9012 3456"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-transparent outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Expiry Date
-                </label>
-                <input
-                  type="text"
-                  value={expiryDate}
-                  onChange={(e) => setExpiryDate(e.target.value)}
-                  placeholder="09/27"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-transparent outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  CVV
-                </label>
-                <input
-                  type="text"
-                  value={cvv}
-                  onChange={(e) => setCvv(e.target.value)}
-                  placeholder="234"
-                  maxLength={3}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-transparent outline-none"
-                />
-              </div>
-
+              <input
+                type="text"
+                placeholder="Cardholder Name"
+                value={cardholderName}
+                onChange={(e) => setCardholderName(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-transparent outline-none"
+              />
+              <input
+                type="text"
+                placeholder="Card Number"
+                value={cardNumber}
+                onChange={(e) => setCardNumber(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-transparent outline-none"
+              />
+              <input
+                type="text"
+                placeholder="Expiry Date (MM/YY)"
+                value={expiryDate}
+                onChange={(e) => setExpiryDate(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-transparent outline-none"
+              />
+              <input
+                type="text"
+                placeholder="CVV"
+                value={cvv}
+                onChange={(e) => setCvv(e.target.value)}
+                maxLength={3}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-transparent outline-none"
+              />
               <button
                 onClick={handleConfirmPayment}
                 disabled={isProcessing}
@@ -143,7 +113,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
         </div>
       </div>
 
-      {/* Payment Processing Overlay */}
+      {/* Modals */}
       {isProcessing && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-8 text-center">
@@ -153,7 +123,6 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
         </div>
       )}
 
-      {/* Payment Success Modal */}
       {showSuccessModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-2xl p-12 max-w-lg w-full relative">
@@ -161,32 +130,9 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
               onClick={() => setShowSuccessModal(false)}
               className="absolute top-6 right-6 text-gray-400 hover:text-gray-600"
             >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
+              ✕
             </button>
             <div className="text-center">
-              <div className="mx-auto flex items-center justify-center mb-6">
-                <svg
-                  className="w-24 h-24 text-green-500"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"
-                  />
-                </svg>
-              </div>
               <h3 className="text-3xl font-bold text-gray-900 mb-3">
                 Payment Successful!
               </h3>
@@ -194,7 +140,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
                 You have made a firm reservation
               </p>
               <p className="text-sm text-gray-600 mb-8">
-                Youll receive an email with your reservation details shortly
+                You'll receive an email with your reservation details shortly
               </p>
               <div className="flex gap-3">
                 <button
@@ -218,4 +164,7 @@ const PaymentScreen: React.FC<PaymentScreenProps> = ({
   );
 };
 
-export default PaymentScreen;
+//  For correction 
+export default function PaymentPage() {
+  return <PaymentScreen />;
+}
