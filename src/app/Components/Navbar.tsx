@@ -10,24 +10,34 @@ const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between py-4 px-8">
         {/* Logo */}
         <h1 className="text-[32px] text-[#212121] leading-[20px] font-semibold">
-          DriveEasy
+          <a href="">DriveEasy</a>
         </h1>
 
         {/* Desktop Links (visible ≥1024px) */}
         <ul className="hidden lg:flex items-center gap-[40px] text-[#000000B2] font-medium">
-          <li className="hover:text-gray-600 cursor-pointer">Home</li>
-          <li className="hover:text-gray-600 cursor-pointer">Browse Cars</li>
-          <li className="hover:text-gray-600 cursor-pointer">My Bookings</li>
-          <li className="hover:text-gray-600 cursor-pointer">Contact Us</li>
-          <li className="hover:text-gray-600 cursor-pointer">About Us</li>
+          <a href="#" className="hover:text-gray-600 cursor-pointer">
+            Home
+          </a>
+          <a href="#" className="hover:text-gray-600 cursor-pointer">
+            Browse Cars
+          </a>
+          <a href="#" className="hover:text-gray-600 cursor-pointer">
+            My Bookings
+          </a>
+          <a href="#" className="hover:text-gray-600 cursor-pointer">
+            Contact Us
+          </a>
+          <a href="#" className="hover:text-gray-600 cursor-pointer">
+            About Us
+          </a>
         </ul>
 
         {/* Desktop Buttons */}
         <div className="hidden lg:flex gap-[16px]">
-          <button className="border-2 border-[#212121] text-[#212121] py-[10px] px-[20px] rounded-[24px]">
+          <button className="border-2 border-[#212121] text-[#212121] py-[10px] px-[20px] rounded-[24px] cursor-pointer">
             Login
           </button>
-          <button className="bg-[#212121] text-white py-[10px] px-[28px] rounded-[24px]">
+          <button className="bg-[#212121] text-white py-[10px] px-[28px] rounded-[24px] cursor-pointer">
             Sign up
           </button>
         </div>
@@ -94,11 +104,11 @@ const Navbar: React.FC = () => {
           About Us
         </a>
         <div className="flex gap-4 mt-2">
-          <button className="border-2 border-[#212121] text-[#212121] py-[8px] px-[16px] rounded-[24px]">
-            Login
+          <button className="border-2 border-[#212121] text-[#212121] py-[8px] px-[16px] rounded-[24px] cursor-pointer">
+            <a href="#">Login</a>
           </button>
-          <button className="bg-[#212121] text-white py-[8px] px-[20px] rounded-[24px]">
-            Sign up
+          <button className="bg-[#212121] text-white py-[8px] px-[20px] rounded-[24px] cursor-pointer">
+            <a href="#">Sign up</a>
           </button>
         </div>
       </div>
