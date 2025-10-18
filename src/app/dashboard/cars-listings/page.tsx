@@ -185,7 +185,7 @@ export default function CarsListings() {
               ))
             ) : (
               <p className="text-center py-6 text-gray-500">
-                No reservations found.
+                No reservations available.
               </p>
             )}
           </div>
