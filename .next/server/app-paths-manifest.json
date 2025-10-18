@@ -1,6 +1,7 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/page": "app/page.js",
-  "/soft-reserve/page": "app/soft-reserve/page.js"
+  "/dashboard/cars-listings/add/page": "app/dashboard/cars-listings/add/page.js",
+  "/dashboard/cars-listings/page": "app/dashboard/cars-listings/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/page": "app/page.js"
 }
