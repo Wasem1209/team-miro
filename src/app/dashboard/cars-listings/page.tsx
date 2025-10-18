@@ -71,7 +71,7 @@ export default function CarsListingsPage() {
           href="/dashboard/cars-listings/add"
           className="flex items-center bg-black text-white px-4 py-2 rounded-full hover:bg-gray-800 transition"
         >
-          <Plus size={18} className="mr-1" /> Add Car
+          <Plus size={18} className="mr-1" /> Add Cars
         </Link>
       </div>
 
