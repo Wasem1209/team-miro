@@ -37,8 +37,8 @@ class ReservationSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError({
                     'user error': 'Guest users cannot set user.'
                 })
-            
-            if data['start_date'] and data['end_date'] < date.today():
+
+            if data['start_date'] < date.today() and data['end_date'] < date.today():
                 raise serializers.ValidationError({
                     'date error': 'The start date and end date must be a current or future date'
                 })

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ReservationCreateAPIView, ReservationListAPIView, ReservationRetrieveAPIView, ReservationUpdateAPIView, ReservationConfirmAPIView, ReservationCancelAPIView
+from .views import ReservationCreateAPIView, ReservationListAPIView, ReservationRetrieveAPIView, ReservationUpdateAPIView, ReservationConfirmAPIView, ReservationCancelAPIView, ReservationDestroyAPIView
 
 urlpatterns = [
     path('new/', ReservationCreateAPIView.as_view(), name='create-reservation'),
@@ -8,4 +8,5 @@ urlpatterns = [
     path('<str:pk>/update/', ReservationUpdateAPIView.as_view(), name='create-reservation'),
     path('<str:pk>/confirm/', ReservationConfirmAPIView.as_view(), name='create-reservation'),
     path('<str:pk>/cancel/', ReservationCancelAPIView.as_view(), name='create-reservation'),
+    path('<str:pk>/delete/', ReservationDestroyAPIView.as_view(), name='delete-reservation'),
 ]

@@ -54,6 +54,7 @@ function SoftReservePage() {
     }["SoftReservePage.useEffect"], [
         page
     ]);
+    // Handle pagination change
     const handlePageChange = (newPage)=>{
         if (newPage < 1 || newPage > totalPages) return;
         setPage(newPage);
@@ -77,18 +78,18 @@ function SoftReservePage() {
                             ]
                         }, void 0, true, {
                             fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-                            lineNumber: 67,
+                            lineNumber: 68,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-                    lineNumber: 65,
+                    lineNumber: 66,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-                lineNumber: 64,
+                lineNumber: 65,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -105,12 +106,12 @@ function SoftReservePage() {
                         children: filter
                     }, i, false, {
                         fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-                        lineNumber: 77,
+                        lineNumber: 78,
                         columnNumber: 13
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-                lineNumber: 74,
+                lineNumber: 75,
                 columnNumber: 7
             }, this),
             loading && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -118,7 +119,7 @@ function SoftReservePage() {
                 children: "Loading cars..."
             }, void 0, false, {
                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-                lineNumber: 89,
+                lineNumber: 90,
                 columnNumber: 9
             }, this),
             error && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -129,7 +130,7 @@ function SoftReservePage() {
                 ]
             }, void 0, true, {
                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-                lineNumber: 96,
+                lineNumber: 97,
                 columnNumber: 9
             }, this),
             !loading && !error && cars.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -137,7 +138,7 @@ function SoftReservePage() {
                 children: "No cars available."
             }, void 0, false, {
                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-                lineNumber: 103,
+                lineNumber: 104,
                 columnNumber: 9
             }, this),
             !loading && !error && cars.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -156,7 +157,7 @@ function SoftReservePage() {
                                         className: "w-full h-56 object-contain p-4"
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-                                        lineNumber: 117,
+                                        lineNumber: 118,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -164,7 +165,7 @@ function SoftReservePage() {
                                         children: car.available ? "Available" : "Unavailable"
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-                                        lineNumber: 124,
+                                        lineNumber: 125,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -182,23 +183,23 @@ function SoftReservePage() {
                                                 d: "M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 016.364 6.364L12 21.364l-7.682-7.682a4.5 4.5 0 010-6.364z"
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-                                                lineNumber: 139,
+                                                lineNumber: 140,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-                                            lineNumber: 132,
+                                            lineNumber: 133,
                                             columnNumber: 19
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-                                        lineNumber: 131,
+                                        lineNumber: 132,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-                                lineNumber: 116,
+                                lineNumber: 117,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -209,7 +210,7 @@ function SoftReservePage() {
                                         children: car.name
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-                                        lineNumber: 150,
+                                        lineNumber: 151,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -223,13 +224,13 @@ function SoftReservePage() {
                                                 children: "per day"
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-                                                lineNumber: 155,
+                                                lineNumber: 156,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-                                        lineNumber: 153,
+                                        lineNumber: 154,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -239,7 +240,7 @@ function SoftReservePage() {
                                                 size: 14
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-                                                lineNumber: 161,
+                                                lineNumber: 162,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -249,7 +250,7 @@ function SoftReservePage() {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-                                                lineNumber: 162,
+                                                lineNumber: 163,
                                                 columnNumber: 19
                                             }, this),
                                             "•",
@@ -257,7 +258,7 @@ function SoftReservePage() {
                                                 children: car.transmission
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-                                                lineNumber: 162,
+                                                lineNumber: 163,
                                                 columnNumber: 50
                                             }, this),
                                             "•",
@@ -265,13 +266,13 @@ function SoftReservePage() {
                                                 children: car.category
                                             }, void 0, false, {
                                                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-                                                lineNumber: 163,
+                                                lineNumber: 164,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-                                        lineNumber: 160,
+                                        lineNumber: 161,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -280,24 +281,24 @@ function SoftReservePage() {
                                         children: car.available ? "Reserve Now" : "Unavailable"
                                     }, void 0, false, {
                                         fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-                                        lineNumber: 166,
+                                        lineNumber: 167,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-                                lineNumber: 149,
+                                lineNumber: 150,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, car.id, true, {
                         fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-                        lineNumber: 112,
+                        lineNumber: 113,
                         columnNumber: 13
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-                lineNumber: 110,
+                lineNumber: 111,
                 columnNumber: 9
             }, this),
             !loading && totalPages > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -310,7 +311,7 @@ function SoftReservePage() {
                         children: "‹"
                     }, void 0, false, {
                         fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-                        lineNumber: 185,
+                        lineNumber: 186,
                         columnNumber: 11
                     }, this),
                     Array.from({
@@ -321,7 +322,7 @@ function SoftReservePage() {
                             children: i + 1
                         }, i, false, {
                             fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-                            lineNumber: 194,
+                            lineNumber: 195,
                             columnNumber: 13
                         }, this)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$Desktop$2f$team$2d$miro$2f$team$2d$miro$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -331,19 +332,19 @@ function SoftReservePage() {
                         children: "›"
                     }, void 0, false, {
                         fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-                        lineNumber: 207,
+                        lineNumber: 208,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-                lineNumber: 184,
+                lineNumber: 185,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/Desktop/team-miro/team-miro/src/app/cars/page.tsx",
-        lineNumber: 62,
+        lineNumber: 63,
         columnNumber: 5
     }, this);
 }
