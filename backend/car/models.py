@@ -10,6 +10,7 @@ class Car(models.Model):
         ('bus', 'Bus'),
         ('van', 'Van'),
         ('luxury-car', 'Luxury-Car'),
+        ('mini-van', 'Luxury-Van'),
     )
 
     STATUS_CHOICES = (

@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from car.models import Car
+from django.utils import timezone
 import uuid
 
 # Create your models here.
@@ -43,3 +44,22 @@ class Reservation(models.Model):
             models.Index(fields=['reservation_type']),
             models.Index(fields=['status']),
         ]
+
+    @property
+    def duration(self):
+        if self.start_date and self.end_date:
+            delta = self.end_date - self.start_date
+            return delta.days + 1 # +1 to include both start and end date
+
+    @property
+    def price_per_day(self):
+        if self.car:
+            return self.car.price_per_day
+        
+    @property
+    def total_price(self):
+        return self.duration * self.car.price_per_day
+    
+    def is_active(self):
+        today = timezone.now().today()
+        return self.start_date <= today <= self.end_date
