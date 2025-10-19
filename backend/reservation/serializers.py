@@ -4,9 +4,25 @@ from datetime import date
 
 
 class ReservationSerializer(serializers.ModelSerializer):
+    duration = serializers.IntegerField(read_only=True)
+    price_per_day = serializers.DecimalField(max_digits=10, decimal_places=2, read_only= True)
+    total_price = serializers.DecimalField(max_digits=10, decimal_places=2, read_only= True)
+
     class Meta:
         model = Reservation
         fields = '__all__'
+        read_only_fields = [
+            'duration',
+            'price_per_day',
+            'total_price'
+        ]
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data['duration'] = instance.duration
+        data['price_per_day'] = float(instance.price_per_day)
+        data['total_price'] = float(instance.total_price)
+        return data
 
     def get_fields(self):
         fields = super().get_fields()

@@ -29,11 +29,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS')]
-
-CORS_ALLOWED_ORIGINS = [os.environ.get('CORS_ALLOWED_ORIGINS')]
+# ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS')]
 
 # Application definition
 
@@ -47,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
     'djoser',
+    'corsheaders',
     'account',
     'car',
     'reservation.apps.ReservationConfig',
@@ -57,12 +56,21 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ALLOW_ALL_ORIGIN = True
+
+# CORS_ALLOWED_ORIGINS = [
+#     os.environ.get('CORS_ALLOWED_ORIGINS'),
+#     'http://localhost:3000'
+
+# print(CORS_ALLOWED_ORIGINS)
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -97,7 +105,6 @@ DATABASES = {
         "PORT": os.environ.get('DB_PORT'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -136,7 +143,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 
-MEDIA_URL = 'https://www.pythonanywhere.com/user/driveeasy/files/home/driveeasy/team-miro/backend/media/'
+MEDIA_URL = 'https://driveeasy.pythonanywhere.com/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, '/home/driveeasy/team-miro/backend/media')
 
 # Default primary key field type
@@ -176,20 +183,25 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 DJOSER = {
-    'PASSWORD_RESET_CONFIRM_URL': '/api/v1/account/auth/users/reset_password_confirm/{uid}/{token}/',
+    'PASSWORD_RESET_CONFIRM_URL': 'api/v1/account/auth/users/reset_password_confirm?uid={uid}&token={token}',
     'SEND_ACTIVATION_EMAIL': True,
-    'ACTIVATION_URL': '/api/v1/account/auth/users/activate/{uid}/{token}',
+    'SEND_CONFIRMATION_EMAIL': True,
+    'ACTIVATION_URL': 'api/v1/account/auth/activation?uid={uid}&token={token}',
     'SERIALIZERS': {
         'user_create': 'djoser.serializers.UserCreateSerializer',
         'user': 'djoser.serializers.UserSerializer',
         'token': 'djoser.serializers.TokenSerializer',
     },
     'TOKEN_MODEL': None,
+    'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': True,
 }
+
+DOMAIN = 'localhost:3000'
+SITE_NAME = 'Drive Easy'
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Car Rental App API',
-    'DESCRIPTION': 'The custom built API for the EasyDrive car rental web app',
+    'DESCRIPTION': 'The custom built API for the Drive Easy Car Rental WebApp',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     'SWAGGER_UI_DIST': 'SIDECAR',
