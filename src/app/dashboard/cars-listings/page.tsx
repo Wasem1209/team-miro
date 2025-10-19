@@ -5,13 +5,27 @@ import Link from "next/link";
 import { Plus, Search } from "lucide-react";
 import Image from "next/image";
 
-// Define Car interface
+// Define Car interface (matches backend)
 interface Car {
-  id: number;
+  id: string;
   name: string;
-  image: string;
-  available: boolean;
-  pricePerDay: number;
+  model: string;
+  year: string;
+  colour: string;
+  car_type: string;
+  price_per_day: number;
+  pickup_location: string;
+  status: "available" | "unavailable";
+  rules: string;
+  seating_capacity: number;
+  luggage_capacity: number;
+  wheel_drive: string;
+  fuel_type: string;
+  transmission: string;
+  photo: string;
+  plate_number: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export default function CarsListingsPage() {
@@ -27,9 +41,13 @@ export default function CarsListingsPage() {
         if (!response.ok) {
           throw new Error("Failed to fetch cars");
         }
-        const data: Car[] = await response.json();
-        setCars(data);
-        setFilteredCars(data);
+
+        const data = await response.json();
+
+        // Expect structure: { results: [...] }
+        const carList = Array.isArray(data?.results) ? data.results : [];
+        setCars(carList);
+        setFilteredCars(carList);
       } catch (error) {
         console.error("Error fetching cars:", error);
       }
@@ -58,7 +76,7 @@ export default function CarsListingsPage() {
         <div className="relative w-full sm:w-1/2 mb-4 sm:mb-0">
           <input
             type="text"
-            placeholder="Search"
+            placeholder="Search cars..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-green-500"
@@ -80,7 +98,7 @@ export default function CarsListingsPage() {
         <div className="w-1/4">Image</div>
         <div className="w-1/4">Car Name</div>
         <div className="w-1/4">Availability</div>
-        <div className="w-1/4 text-right">Price per day</div>
+        <div className="w-1/4 text-right">Price per Day</div>
       </div>
 
       {/* Cars List */}
@@ -94,7 +112,7 @@ export default function CarsListingsPage() {
               {/* Car Image */}
               <div className="w-full sm:w-1/4 flex justify-center">
                 <Image
-                  src={car.image || "/placeholder-car.png"}
+                  src={car.photo || "/placeholder-car.png"}
                   alt={car.name}
                   height={0}
                   width={0}
@@ -102,27 +120,30 @@ export default function CarsListingsPage() {
                 />
               </div>
 
-              {/* Car Name */}
+              {/* Car Name and Model */}
               <div className="w-full sm:w-1/4 text-center font-medium">
-                {car.name || "Unknown"}
+                {car.name || "Unnamed"}{" "}
+                <span className="text-gray-500 text-sm">({car.model})</span>
               </div>
 
               {/* Availability */}
               <div className="w-full sm:w-1/4 text-center">
                 <span
                   className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                    car.available
+                    car.status === "available"
                       ? "bg-green-100 text-green-700"
                       : "bg-red-100 text-red-700"
                   }`}
                 >
-                  {car.available ? "Available" : "Unavailable"}
+                  {car.status === "available" ? "Available" : "Unavailable"}
                 </span>
               </div>
 
-              {/* Price and Actions */}
+              {/* Price + Actions */}
               <div className="w-full sm:w-1/4 flex flex-col sm:flex-row justify-end gap-3 items-center mt-2 sm:mt-0">
-                <span className="font-semibold">${car.pricePerDay}</span>
+                <span className="font-semibold">
+                  ${car.price_per_day || 0}
+                </span>
 
                 <div className="flex gap-2">
                   <button className="bg-black text-white px-3 py-1 rounded hover:bg-gray-800 transition">
@@ -136,7 +157,7 @@ export default function CarsListingsPage() {
             </div>
           ))
         ) : (
-          <div className="text-center text-gray-500 py-8">No car found.</div>
+          <div className="text-center text-gray-500 py-8">No cars found.</div>
         )}
       </div>
     </div>
