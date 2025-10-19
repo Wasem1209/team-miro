@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Plus, Search, Eye } from "lucide-react";
 import Image from "next/image";
+import Reservation from "../reservations/page";
 
 // ✅ Backend-safe interface
 interface Car {
@@ -15,7 +16,7 @@ interface Car {
   car_type: string;
   price_per_day: number;
   pickup_location: string;
-  status: string; // <-- allow any string from backend safely
+  status: string; // from reservation
   rules: string;
   seating_capacity: number;
   luggage_capacity: number;
@@ -38,34 +39,40 @@ export default function CarsListingsPage() {
 
   const API_BASE = process.env.NEXT_PUBLIC_API_URL || "";
 
-  // ✅ Fetch all cars
+  // ✅ Fetch reservations and normalize cars
   useEffect(() => {
     async function fetchCars() {
       setLoading(true);
       try {
-        const response = await fetch(`${API_BASE}/api/v1/car/`);
-        if (!response.ok) throw new Error("Failed to fetch cars");
-        const data = await response.json();
+        const res = await fetch(`${API_BASE}/api/v1/reservations/`);
+        if (!res.ok) throw new Error("Failed to fetch reservations");
+        const data = await res.json();
 
-        const carList = Array.isArray(data.results)
-          ? data.results
-          : Array.isArray(data)
-          ? data
-          : [];
+        const reservations = Array.isArray(data.results) ? data.results : [];
 
-        // Normalize status
-        const normalizedCars = carList.map((car: Car) => ({
-          ...car,
-          status:
-            car.status?.toLowerCase() === "available"
-              ? "available"
-              : "unavailable",
-        }));
+        // Fetch full car details for each reservation
+       const normalizedCars = await Promise.all(
+  (reservations as Reservation[]).map(async (reservation) => {
+    try {
+      const carRes = await fetch(`${API_BASE}/api/v1/car/${reservation.car}/`);
+      if (!carRes.ok) throw new Error("Failed to fetch car");
+      const carData = await carRes.json();
+      return {
+        ...carData,
+        status: reservation.status, // use reservation status
+      };
+    } catch (err) {
+      console.error(`Error fetching car ${reservation.car}:`, err);
+      return null;
+    }
+  })
+);
 
-        setCars(normalizedCars);
-        setFilteredCars(normalizedCars);
+        const validCars = normalizedCars.filter((c) => c !== null);
+        setCars(validCars);
+        setFilteredCars(validCars);
       } catch (error) {
-        console.error("Error fetching cars:", error);
+        console.error("Error fetching reservations:", error);
       } finally {
         setLoading(false);
       }
@@ -74,7 +81,7 @@ export default function CarsListingsPage() {
     fetchCars();
   }, [API_BASE]);
 
-  // ✅ Fetch single car by ID (for modal view)
+  // ✅ Modal view
   async function handleView(id: string) {
     try {
       const res = await fetch(`${API_BASE}/api/v1/car/${id}/`);
@@ -107,11 +114,10 @@ export default function CarsListingsPage() {
     }
   }
 
-  // ✅ Inline status toggle (update car)
+  // ✅ Toggle availability
   async function handleToggleAvailability(car: Car) {
     try {
-      const newStatus =
-        car.status === "available" ? "unavailable" : "available";
+      const newStatus = car.status === "available" ? "unavailable" : "available";
 
       const res = await fetch(`${API_BASE}/api/v1/car/${car.id}/update/`, {
         method: "PUT",
@@ -146,7 +152,7 @@ export default function CarsListingsPage() {
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
-      {/* Header Section */}
+      {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
         <div className="relative w-full sm:w-1/2 mb-4 sm:mb-0">
           <input
