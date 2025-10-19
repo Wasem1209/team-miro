@@ -39,12 +39,12 @@ export default function CarsListingsPage() {
 
   const API_BASE = process.env.NEXT_PUBLIC_API_URL || "";
 
-  // ✅ Fetch reservations and normalize cars
+  // Fetch reservations and normalize cars
   useEffect(() => {
     async function fetchCars() {
       setLoading(true);
       try {
-        const res = await fetch(`${API_BASE}/api/v1/reservations/`);
+        const res = await fetch(`${API_BASE}https://driveeasy.pythonanywhere.com/api/v1/car/`);
         if (!res.ok) throw new Error("Failed to fetch reservations");
         const data = await res.json();
 
