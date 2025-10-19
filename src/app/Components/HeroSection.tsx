@@ -126,7 +126,7 @@ const HeroSection: React.FC = () => {
           </div>
         </div>
 
-        {/* The hero-section image to the rigth */}
+        {/* The hero-section image to the right */}
         <div className="w-1/2 flex justify-center">
           <Image
             src="/images/team-m.png"
