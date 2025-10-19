@@ -2,9 +2,11 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 export default function SignupPage1() {
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
   const [formData, setFormData] = useState({
     email: '',
     username: '',
@@ -45,7 +47,7 @@ export default function SignupPage1() {
           <div className="w-full max-w-md">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="mb-6">
-                <h2 className="text-3xl font-bold text-gray-900 mb-2">Create Account</h2>
+                <h2 className="text-3xl font-bold text-gray-900 mb-2">Login into your Account</h2>
                 <p className="text-gray-600 text-sm">Get ready to unlock a world of effortless car rentals</p>
               </div>
 
@@ -132,9 +134,10 @@ export default function SignupPage1() {
               {/* Create Account Button */}
               <button
                 type="submit"
+                onClick={() => router.push("/home-folder")}
                 className="w-full bg-black text-white font-semibold py-2.5 rounded-full hover:bg-gray-800 transition duration-200 mt-6"
               >
-                Create Account
+                Login
               </button>
 
               {/* Sign up Link */}

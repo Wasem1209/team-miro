@@ -2923,7 +2923,20 @@ const configEnv = ("TURBOPACK compile-time value", {
     "dangerouslyAllowSVG": ("TURBOPACK compile-time value", false),
     "unoptimized": ("TURBOPACK compile-time value", false),
     "domains": ("TURBOPACK compile-time value", []),
-    "remotePatterns": ("TURBOPACK compile-time value", [])
+    "remotePatterns": ("TURBOPACK compile-time value", [
+        ("TURBOPACK compile-time value", {
+            "protocol": ("TURBOPACK compile-time value", "https"),
+            "hostname": ("TURBOPACK compile-time value", "www.pythonanywhere.com"),
+            "port": ("TURBOPACK compile-time value", ""),
+            "pathname": ("TURBOPACK compile-time value", "/user/driveeasy/files/**")
+        }),
+        ("TURBOPACK compile-time value", {
+            "protocol": ("TURBOPACK compile-time value", "https"),
+            "hostname": ("TURBOPACK compile-time value", "driveeasy.pythonanywhere.com"),
+            "port": ("TURBOPACK compile-time value", ""),
+            "pathname": ("TURBOPACK compile-time value", "/**")
+        })
+    ])
 });
 if ("TURBOPACK compile-time truthy", 1) {
     ;
@@ -3266,7 +3279,20 @@ function getImageProps(imgProps) {
             "dangerouslyAllowSVG": ("TURBOPACK compile-time value", false),
             "unoptimized": ("TURBOPACK compile-time value", false),
             "domains": ("TURBOPACK compile-time value", []),
-            "remotePatterns": ("TURBOPACK compile-time value", [])
+            "remotePatterns": ("TURBOPACK compile-time value", [
+                ("TURBOPACK compile-time value", {
+                    "protocol": ("TURBOPACK compile-time value", "https"),
+                    "hostname": ("TURBOPACK compile-time value", "www.pythonanywhere.com"),
+                    "port": ("TURBOPACK compile-time value", ""),
+                    "pathname": ("TURBOPACK compile-time value", "/user/driveeasy/files/**")
+                }),
+                ("TURBOPACK compile-time value", {
+                    "protocol": ("TURBOPACK compile-time value", "https"),
+                    "hostname": ("TURBOPACK compile-time value", "driveeasy.pythonanywhere.com"),
+                    "port": ("TURBOPACK compile-time value", ""),
+                    "pathname": ("TURBOPACK compile-time value", "/**")
+                })
+            ])
         })
     });
     // Normally we don't care about undefined props because we pass to JSX,
