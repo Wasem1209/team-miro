@@ -114,8 +114,8 @@ export default function CarsListingsPage() {
                 <Image
                   src={car.photo || "/placeholder-car.png"}
                   alt={car.name}
-                  height={0}
-                  width={0}
+                  height={30}
+                  width={30}
                   className="w-24 h-16 object-cover rounded"
                 />
               </div>

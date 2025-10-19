@@ -8,7 +8,7 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [] = useState(false);
+  
 
   return (
     <div className="flex min-h-screen bg-gray-100">

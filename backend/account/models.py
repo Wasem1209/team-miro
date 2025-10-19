@@ -10,13 +10,13 @@ class CustomUser(AbstractUser):
         ('male', 'Male'),
         ('female', 'Female'),
     )
-    
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     email = models.EmailField(unique=True, blank=False, null=False)
     address = models.CharField(max_length=100)
     phone_number = models.CharField(max_length=100)
     gender = models.CharField(choices=CHOICES, max_length=20)
-    profile_photo = models.ImageField(upload_to='media/profile_photos/', blank=True, default=None, null=True)
+    profile_photo = models.ImageField(upload_to='profile_photos', blank=True, default=None, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
