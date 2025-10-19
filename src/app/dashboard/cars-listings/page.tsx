@@ -54,7 +54,7 @@ export default function CarsListingsPage() {
        const normalizedCars = await Promise.all(
   (reservations as Reservation[]).map(async (reservation) => {
     try {
-      const carRes = await fetch(`${API_BASE}/api/v1/car/${reservation.car}/`);
+      const carRes = await fetch(`${API_BASE}https://driveeasy.pythonanywhere.com/api/v1/car/${reservation.car}/`);
       if (!carRes.ok) throw new Error("Failed to fetch car");
       const carData = await carRes.json();
       return {
@@ -72,7 +72,7 @@ export default function CarsListingsPage() {
         setCars(validCars);
         setFilteredCars(validCars);
       } catch (error) {
-        console.error("Error fetching reservations:", error);
+        console.error("Error fetching cars:", error);
       } finally {
         setLoading(false);
       }
@@ -81,10 +81,10 @@ export default function CarsListingsPage() {
     fetchCars();
   }, [API_BASE]);
 
-  // ✅ Modal view
+  //Modal view
   async function handleView(id: string) {
     try {
-      const res = await fetch(`${API_BASE}/api/v1/car/${id}/`);
+      const res = await fetch(`${API_BASE}https://driveeasy.pythonanywhere.com/api/v1/car/${id}/`);
       if (!res.ok) throw new Error("Failed to fetch car details");
       const data = await res.json();
       setSelectedCar(data);
@@ -94,12 +94,12 @@ export default function CarsListingsPage() {
     }
   }
 
-  // ✅ Delete car
+  // Delete car
   async function handleDelete(id: string) {
     if (!confirm("Are you sure you want to delete this car?")) return;
 
     try {
-      const res = await fetch(`${API_BASE}/api/v1/car/${id}/delete/`, {
+      const res = await fetch(`${API_BASE}https://driveeasy.pythonanywhere.com/api/v1/car/${id}/delete/`, {
         method: "DELETE",
       });
 
@@ -114,12 +114,12 @@ export default function CarsListingsPage() {
     }
   }
 
-  // ✅ Toggle availability
+  // Toggle availability
   async function handleToggleAvailability(car: Car) {
     try {
       const newStatus = car.status === "available" ? "unavailable" : "available";
 
-      const res = await fetch(`${API_BASE}/api/v1/car/${car.id}/update/`, {
+      const res = await fetch(`${API_BASE}https://driveeasy.pythonanywhere.com/api/v1/car/${car.id}/update/`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: newStatus }),
@@ -138,7 +138,7 @@ export default function CarsListingsPage() {
     }
   }
 
-  // ✅ Search filter
+  //  Search filter
   useEffect(() => {
     if (searchQuery.trim() === "") {
       setFilteredCars(cars);
