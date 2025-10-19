@@ -1,267 +1,459 @@
 "use client"
+import React, { useState, useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { Loader2, AlertCircle } from "lucide-react";
+import Image from "next/image";
 
-import React, { useState } from "react";
+interface CarDetails {
+  id: string;
+  name: string;
+  model: string;
+  price_per_day: number;
+  photo: string;
+}
 
-interface FormData {
-  emailAddress: string;
-  firstName: string;
-  phoneNumber: string;
-  address: string;
-  country: string;
-  city: string;
-  state: string;
-  driversLicense: string;
-  pickupDate: string;
-  returnDate: string;
+interface ReservationFormData {
+  car: string;
+  customer_name: string;
+  customer_email: string;
+  customer_phone: string;
+  pickup_date: string;
+  return_date: string;
+  pickup_location: string;
+  additional_notes?: string;
 }
 
 const SoftReserveForm: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>({
-    emailAddress: "",
-    firstName: "",
-    phoneNumber: "",
-    address: "",
-    country: "United States",
-    city: "",
-    state: "",
-    driversLicense: "",
-    pickupDate: "",
-    returnDate: "",
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const carId = searchParams.get('id');
+  
+  const [car, setCar] = useState<CarDetails | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const [formData, setFormData] = useState<ReservationFormData>({
+    car: carId || '',
+    customer_name: '',
+    customer_email: '',
+    customer_phone: '',
+    pickup_date: '',
+    return_date: '',
+    pickup_location: '',
+    additional_notes: '',
   });
 
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  useEffect(() => {
+    if (carId) {
+      fetchCarDetails(carId);
+    } else {
+      setError("No car ID provided");
+      setLoading(false);
+    }
+  }, [carId]);
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const fetchCarDetails = async (id: string) => {
+    try {
+      setLoading(true);
+      const response = await fetch(`/api/available-cars/${id}`);
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch car details');
+      }
+
+      const data = await response.json();
+      setCar(data);
+      setFormData(prev => ({ ...prev, car: id }));
+      setError(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+      console.error('Error fetching car details:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
-      [name]: value,
+      [name]: value
     }));
   };
 
-  const handleSubmit = () => {
-    console.log("Form submitted:", formData);
-    setShowSuccessModal(true);
+  const calculateTotalDays = () => {
+    if (formData.pickup_date && formData.return_date) {
+      const pickup = new Date(formData.pickup_date);
+      const returnDate = new Date(formData.return_date);
+      const diffTime = Math.abs(returnDate.getTime() - pickup.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      return diffDays || 1;
+    }
+    return 0;
   };
 
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-white p-6">
-      <div className="bg-gray-100 rounded-lg shadow-md w-full max-w-4xl p-8">
-        <h1 className="text-2xl font-bold mb-6">Fill the form below to continue</h1>
+  const calculateTotalPrice = () => {
+    const days = calculateTotalDays();
+    return days > 0 && car ? days * car.price_per_day : 0;
+  };
 
-        <div className="space-y-6">
-          {/* Row 1: Email and First Name */}
-          <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address
-              </label>
-              <input
-                type="email"
-                name="emailAddress"
-                value={formData.emailAddress}
-                onChange={handleInputChange}
-                placeholder="johnwhite@gmail.com"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-transparent outline-none"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                First Name and Last Name
-              </label>
-              <input
-                type="text"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleInputChange}
-                placeholder="johnwhite@gmail.com"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-transparent outline-none"
-              />
-            </div>
-          </div>
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Basic validation
+    if (!formData.customer_name || !formData.customer_email || !formData.customer_phone ||
+        !formData.pickup_date || !formData.return_date || !formData.pickup_location) {
+      setError('Please fill in all required fields');
+      return;
+    }
 
-          {/* Row 2: Phone and Address */}
-          <div className="grid md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Phone Number
-              </label>
-              <input
-                type="tel"
-                name="phoneNumber"
-                value={formData.phoneNumber}
-                onChange={handleInputChange}
-                placeholder="+1 (202) 555-0173"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-transparent outline-none"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Address
-              </label>
-              <input
-                type="text"
-                name="address"
-                value={formData.address}
-                onChange={handleInputChange}
-                placeholder="2456 Park Avenue, New York, United States"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-transparent outline-none"
-              />
-            </div>
-          </div>
+    // Validate dates
+    const pickup = new Date(formData.pickup_date);
+    const returnDate = new Date(formData.return_date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-          {/* Row 3: Country, City, State */}
-          <div className="grid md:grid-cols-3 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Country
-              </label>
-              <select
-                name="country"
-                value={formData.country}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-transparent outline-none appearance-none bg-white"
-              >
-                <option value="United States">United States</option>
-                <option value="Canada">Canada</option>
-                <option value="United Kingdom">United Kingdom</option>
-                <option value="Australia">Australia</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                City
-              </label>
-              <input
-                type="text"
-                name="city"
-                value={formData.city}
-                onChange={handleInputChange}
-                placeholder="New York"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-transparent outline-none"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                State
-              </label>
-              <input
-                type="text"
-                name="state"
-                value={formData.state}
-                onChange={handleInputChange}
-                placeholder="NY"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-transparent outline-none"
-              />
-            </div>
-          </div>
+    if (pickup < today) {
+      setError('Pickup date cannot be in the past');
+      return;
+    }
 
-          {/* Row 4: Driver's License, Pickup Date, Return Date */}
-          <div className="grid md:grid-cols-3 gap-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Driver License Number
-              </label>
-              <input
-                type="text"
-                name="driversLicense"
-                value={formData.driversLicense}
-                onChange={handleInputChange}
-                placeholder="A1234567"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-transparent outline-none"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Pick-up Date
-              </label>
-              <input
-                type="date"
-                name="pickupDate"
-                value={formData.pickupDate}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-transparent outline-none"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Return Date
-              </label>
-              <input
-                type="date"
-                name="returnDate"
-                value={formData.returnDate}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-black focus:border-transparent outline-none"
-              />
-            </div>
-          </div>
+    if (returnDate <= pickup) {
+      setError('Return date must be after pickup date');
+      return;
+    }
 
-          {/* Submit Button */}
+    try {
+      setSubmitting(true);
+      setError(null);
+
+      // Save reservation data to sessionStorage for after login
+      const reservationData = {
+        ...formData,
+        carDetails: car,
+        totalDays: calculateTotalDays(),
+        totalPrice: calculateTotalPrice(),
+        timestamp: new Date().toISOString()
+      };
+      
+      sessionStorage.setItem('pendingReservation', JSON.stringify(reservationData));
+
+      // Simulate submission and show success modal immediately
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      console.log('Soft reservation created:', formData);
+      setSuccess(true);
+      
+      // Optional: Send to backend without waiting for response
+      fetch('/api/reservation', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      }).catch(err => console.error('Background submission failed:', err));
+      
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to submit reservation');
+      console.error('Error submitting reservation:', err);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleSignupNow = () => {
+    // Ensure data is saved before navigating
+    const reservationData = {
+      ...formData,
+      carDetails: car,
+      totalDays: calculateTotalDays(),
+      totalPrice: calculateTotalPrice(),
+      timestamp: new Date().toISOString()
+    };
+    
+    sessionStorage.setItem('pendingReservation', JSON.stringify(reservationData));
+    
+    // Navigate to signup with a flag
+    router.push('/auth/Signup?from=reservation');
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-6">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="w-12 h-12 animate-spin text-gray-600" />
+          <p className="text-gray-600 text-lg">Loading car details...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!car && error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-6">
+        <div className="text-center">
+          <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
+          <p className="text-red-600 text-lg mb-4">{error}</p>
           <button
-            onClick={handleSubmit}
-            className="w-full bg-black text-white py-3 px-6 rounded-lg font-medium hover:bg-gray-800 transition-colors"
+            onClick={() => router.push('/')}
+            className="bg-black text-white px-6 py-2 rounded hover:bg-gray-800 transition-colors"
           >
-            Reserve
+            Back to Home
           </button>
         </div>
       </div>
+    );
+  }
 
-      {/* Success Modal */}
-      {showSuccessModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl p-12 max-w-lg w-full relative">
-            <button
-              onClick={() => setShowSuccessModal(false)}
-              className="absolute top-6 right-6 text-gray-400 hover:text-gray-600"
-            >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-            <div className="text-center">
-              <div className="mx-auto flex items-center justify-center mb-6">
-                <svg
-                  className="w-24 h-24 text-green-500"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"
+  if (success) {
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-6 z-50">
+        <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-8 text-center relative">
+          <button
+            onClick={() => router.push('/')}
+            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+          
+          <div className="mb-4">
+            <svg className="w-16 h-16 mx-auto text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Successful!</h2>
+          <p className="text-gray-600 mb-6">
+            This is a soft reservation
+            <br />
+            You have an hour to sign up to make a firm reservation - firm reservations override soft reservations
+          </p>
+          
+          <button
+            onClick={handleSignupNow}
+            className="w-full bg-black text-white py-3 px-6 rounded-lg font-medium hover:bg-gray-800 transition-colors mb-3"
+          >
+            Sign up now
+          </button>
+          
+          <button
+            onClick={() => router.push('/')}
+            className="text-gray-600 hover:text-gray-800 text-sm"
+          >
+            Continue browsing
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const totalDays = calculateTotalDays();
+  const totalPrice = calculateTotalPrice();
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-12 px-4">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-3xl font-bold text-gray-900 mb-8">Complete Your Reservation</h1>
+        
+        {/* Car Summary */}
+        {car && (
+          <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+            <div className="flex items-center gap-4">
+              <div className="flex-shrink-0 w-24 h-24 bg-gray-200 rounded overflow-hidden">
+                {car.photo && car.photo.trim() !== '' ? (
+                  <Image
+                    src={car.photo} 
+                    width={96}
+                    height={96}
+                    alt={`${car.name} ${car.model}`}
+                    className="w-full h-full object-cover"
                   />
-                </svg>
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                )}
               </div>
-              <h3 className="text-3xl font-bold text-gray-900 mb-4">
-                Successful!
-              </h3>
-              <p className="text-base font-semibold text-gray-900 mb-2">
-                This is a soft reservation
-              </p>
-              <p className="text-sm text-gray-600 mb-8">
-                You have an hour to sign up to make a firm reservation, firm reservations override soft reservations
-              </p>
+              <div className="flex-1">
+                <h3 className="text-xl font-bold text-gray-900">{car.name} {car.model}</h3>
+                <p className="text-gray-600">${car.price_per_day} per day</p>
+              </div>
+              {totalDays > 0 && (
+                <div className="text-right">
+                  <p className="text-sm text-gray-600">{totalDays} day{totalDays > 1 ? 's' : ''}</p>
+                  <p className="text-2xl font-bold text-gray-900">${totalPrice}</p>
+                  <p className="text-xs text-gray-500">Total</p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Reservation Form */}
+        <div className="bg-white rounded-lg shadow-md p-6">
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
+              <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+              <p className="text-red-700 text-sm">{error}</p>
+            </div>
+          )}
+
+          <div className="space-y-6">
+            {/* Personal Information */}
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Personal Information</h3>
+              
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="customer_name" className="block text-sm font-medium text-gray-700 mb-2">
+                    Full Name *
+                  </label>
+                  <input
+                    type="text"
+                    id="customer_name"
+                    name="customer_name"
+                    value={formData.customer_name}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                    placeholder="John Doe"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="customer_email" className="block text-sm font-medium text-gray-700 mb-2">
+                    Email Address *
+                  </label>
+                  <input
+                    type="email"
+                    id="customer_email"
+                    name="customer_email"
+                    value={formData.customer_email}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                    placeholder="john@example.com"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="customer_phone" className="block text-sm font-medium text-gray-700 mb-2">
+                    Phone Number *
+                  </label>
+                  <input
+                    type="tel"
+                    id="customer_phone"
+                    name="customer_phone"
+                    value={formData.customer_phone}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                    placeholder="+1 (555) 123-4567"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Reservation Details */}
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Reservation Details</h3>
+              
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="pickup_date" className="block text-sm font-medium text-gray-700 mb-2">
+                    Pickup Date *
+                  </label>
+                  <input
+                    type="date"
+                    id="pickup_date"
+                    name="pickup_date"
+                    value={formData.pickup_date}
+                    onChange={handleInputChange}
+                    min={new Date().toISOString().split('T')[0]}
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="return_date" className="block text-sm font-medium text-gray-700 mb-2">
+                    Return Date *
+                  </label>
+                  <input
+                    type="date"
+                    id="return_date"
+                    name="return_date"
+                    value={formData.return_date}
+                    onChange={handleInputChange}
+                    min={formData.pickup_date || new Date().toISOString().split('T')[0]}
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                  />
+                </div>
+
+                <div className="md:col-span-2">
+                  <label htmlFor="pickup_location" className="block text-sm font-medium text-gray-700 mb-2">
+                    Pickup Location *
+                  </label>
+                  <input
+                    type="text"
+                    id="pickup_location"
+                    name="pickup_location"
+                    value={formData.pickup_location}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                    placeholder="123 Main Street, City"
+                  />
+                </div>
+
+                <div className="md:col-span-2">
+                  <label htmlFor="additional_notes" className="block text-sm font-medium text-gray-700 mb-2">
+                    Additional Notes (Optional)
+                  </label>
+                  <textarea
+                    id="additional_notes"
+                    name="additional_notes"
+                    value={formData.additional_notes}
+                    onChange={handleInputChange}
+                    rows={4}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent resize-none"
+                    placeholder="Any special requests or requirements..."
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <div className="pt-4">
               <button
-                onClick={() => setShowSuccessModal(false)}
-                className="w-full bg-black text-white py-3 px-6 rounded-lg font-medium hover:bg-gray-800 transition-colors"
+                onClick={handleSubmit}
+                disabled={submitting}
+                className={`w-full py-3 px-6 rounded-lg font-medium transition-colors ${
+                  submitting
+                    ? 'bg-gray-400 cursor-not-allowed'
+                    : 'bg-black text-white hover:bg-gray-800'
+                }`}
               >
-                Sign up now
+                {submitting ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Submitting...
+                  </span>
+                ) : (
+                  'Confirm Reservation'
+                )}
               </button>
             </div>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };

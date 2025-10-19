@@ -23,7 +23,7 @@ interface CarDetails {
   photo: string;
 }
 
-const SoftReservePage: React.FC = () => {
+const UserReservePage: React.FC = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const carId = searchParams.get('id');
@@ -182,7 +182,7 @@ const SoftReservePage: React.FC = () => {
               </p>
 
               <button
-                onClick={() => router.push(`/softReserveForm?id=${car.id}`)}
+                onClick={() => router.push(`/userReserveForm?id=${car.id}`)}
                 className="w-full bg-black text-white py-3 px-6 rounded-lg font-medium hover:bg-gray-800 transition-colors">
                 Reserve
               </button>
@@ -194,4 +194,4 @@ const SoftReservePage: React.FC = () => {
   );
 };
 
-export default SoftReservePage;
+export default UserReservePage;

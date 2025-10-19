@@ -12,12 +12,12 @@ interface Car {
   car_type: 'suv' | 'sedan' | 'hatchback' | 'sports' | 'luxury';
   price_per_day: number;
   pickup_location: string;
-  status: 'available' | 'unavailable' | 'maintenance';
+  status: 'available' | 'unavailable';
   rules: string;
   seating_capacity: number;
   luggage_capacity: number;
   wheel_drive: '2-wheel' | '4-wheel';
-  fuel_type: 'petrol' | 'diesel' | 'electric' | 'hybrid';
+  fuel_type: 'petrol' | 'diesel' | 'electric';
   transmission: 'manual' | 'automatic';
   photo: string;
   isFavorite?: boolean;
@@ -162,14 +162,6 @@ const FeaturedVehicle: React.FC = () => {
                   </div>
                 )}
 
-                {car.status === 'maintenance' && (
-                  <div className="absolute top-3 left-3">
-                    <span className="bg-yellow-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
-                      Maintenance
-                    </span>
-                  </div>
-                )}
-
                 {car.status === 'unavailable' && (
                   <div className="absolute top-3 left-3">
                     <span className="bg-red-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
@@ -231,7 +223,7 @@ const FeaturedVehicle: React.FC = () => {
                 {/* Reserve Button */}
                 <div className='flex gap-2 items-center'>
                   <button
-                    onClick={() => router.push(`/soft-reserve?id=${car.id}`)}
+                    onClick={() => router.push(`/userReserve?id=${car.id}`)}
                     disabled={car.status !== 'available'}
                     className={`flex-1 font-semibold py-3 rounded transition-colors ${
                       car.status === 'available'
