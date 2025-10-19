@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Plus, Search } from "lucide-react";
 import Image from "next/image";
 
-// Define Car interface (matches backend)
+// Define Car interface (matches backend schema)
 interface Car {
   id: string;
   name: string;
@@ -32,31 +32,58 @@ export default function CarsListingsPage() {
   const [cars, setCars] = useState<Car[]>([]);
   const [filteredCars, setFilteredCars] = useState<Car[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  // Fetch cars from backend
+  // ✅ Fetch all cars
   useEffect(() => {
     async function fetchCars() {
+      setLoading(true);
       try {
         const response = await fetch("/api/v1/car/");
-        if (!response.ok) {
-          throw new Error("Failed to fetch cars");
-        }
+        if (!response.ok) throw new Error("Failed to fetch cars");
 
         const data = await response.json();
 
-        // Expect structure: { results: [...] }
-        const carList = Array.isArray(data?.results) ? data.results : [];
+        // If backend returns { results: [...] }
+        const carList = Array.isArray(data.results)
+          ? data.results
+          : Array.isArray(data)
+          ? data
+          : [];
+
         setCars(carList);
         setFilteredCars(carList);
       } catch (error) {
         console.error("Error fetching cars:", error);
+      } finally {
+        setLoading(false);
       }
     }
 
     fetchCars();
   }, []);
 
-  // Search filter
+  // ✅ Handle delete
+  async function handleDelete(id: string) {
+    if (!confirm("Are you sure you want to delete this car?")) return;
+
+    try {
+      const res = await fetch(`/api/v1/car/${id}/delete/`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) throw new Error("Failed to delete car");
+
+      setCars((prev) => prev.filter((car) => car.id !== id));
+      setFilteredCars((prev) => prev.filter((car) => car.id !== id));
+      alert("Car deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting car:", error);
+      alert("An error occurred while deleting the car.");
+    }
+  }
+
+  // ✅ Search filter
   useEffect(() => {
     if (searchQuery.trim() === "") {
       setFilteredCars(cars);
@@ -103,7 +130,9 @@ export default function CarsListingsPage() {
 
       {/* Cars List */}
       <div className="bg-white shadow rounded-b-lg divide-y divide-gray-200">
-        {filteredCars.length > 0 ? (
+        {loading ? (
+          <div className="text-center text-gray-500 py-8">Loading cars...</div>
+        ) : filteredCars.length > 0 ? (
           filteredCars.map((car) => (
             <div
               key={car.id}
@@ -114,8 +143,8 @@ export default function CarsListingsPage() {
                 <Image
                   src={car.photo || "/placeholder-car.png"}
                   alt={car.name}
-                  height={30}
-                  width={30}
+                  height={64}
+                  width={96}
                   className="w-24 h-16 object-cover rounded"
                 />
               </div>
@@ -141,15 +170,19 @@ export default function CarsListingsPage() {
 
               {/* Price + Actions */}
               <div className="w-full sm:w-1/4 flex flex-col sm:flex-row justify-end gap-3 items-center mt-2 sm:mt-0">
-                <span className="font-semibold">
-                  ${car.price_per_day || 0}
-                </span>
+                <span className="font-semibold">${car.price_per_day || 0}</span>
 
                 <div className="flex gap-2">
-                  <button className="bg-black text-white px-3 py-1 rounded hover:bg-gray-800 transition">
+                  <Link
+                    href={`/dashboard/cars-listings/${car.id}/update`}
+                    className="bg-black text-white px-3 py-1 rounded hover:bg-gray-800 transition"
+                  >
                     Edit
-                  </button>
-                  <button className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition">
+                  </Link>
+                  <button
+                    onClick={() => handleDelete(car.id)}
+                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
+                  >
                     Remove
                   </button>
                 </div>
