@@ -1,10 +1,9 @@
-'use client'
+"use client"
 import HeroSection from "./Components/HeroSection";
 import FeaturedVehicle from "./Components/FeaturedVehicle";
 import WhyChooseUs from "./Components/WhyChooseUs";
 import HowItWorks from "./Components/HowItWorks";
 import Newsletter from "./Components/Newsletter";
-
 
 
 export default function Home() {
