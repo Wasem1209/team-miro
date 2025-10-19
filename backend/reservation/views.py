@@ -26,23 +26,10 @@ class ReservationCreateAPIView(generics.CreateAPIView):
                 start_date__lt=end_date,
                 end_date__gt=start_date
             ).exclude(status__in=['cancelled', 'active'])
-            from reservation.signals import notify_guest_reservation_overridden
             for guest_res in overlaps:
                 # mark overridden and notify guest
                 guest_res.status = 'overridden'
                 guest_res.save()
-            # set car status to reserved only if the reservation covers now
-            from django.utils import timezone
-            from car.models import Car
-            try:
-                car_obj = Car.objects.get(pk=car)
-                now = timezone.now()
-                # if current time is within the reservation window, mark reserved
-                if start_date and end_date and start_date <= now and now <= end_date:
-                    car_obj.status = 'reserved'
-                    car_obj.save()
-            except Car.DoesNotExist:
-                pass
             serializer.save(user=user, reservation_type='firm', status='pending')
         else:
             serializer.save(reservation_type='soft', status='pending')
@@ -56,6 +43,9 @@ class ReservationUpdateAPIView(generics.UpdateAPIView):
     def perform_update(self, serializer):
         user = self.request.user
         instance = self.get_object()
+        car = self.request.data.get('car')
+        start_date = self.request.data.get('start_date')
+        end_date = self.request.data.get('end_date')
         if not user.is_staff and instance.user == user:
             serializer.save(status='modified')
         else:
@@ -73,18 +63,6 @@ class ReservationUpdateAPIView(generics.UpdateAPIView):
                 # mark overridden and notify guest
                 guest_res.status = 'overridden'
                 guest_res.save()
-            # set car status to reserved only if the reservation covers now
-            from django.utils import timezone
-            from car.models import Car
-            try:
-                car_obj = Car.objects.get(pk=car)
-                now = timezone.now()
-                # if current time is within the reservation window, mark reserved
-                if start_date and end_date and start_date <= now and now <= end_date:
-                    car_obj.status = 'reserved'
-                    car_obj.save()
-            except Car.DoesNotExist:
-                pass
         else:
             serializer.save(reservation_type='soft', status='mofified')
 
@@ -144,3 +122,8 @@ class ReservationConfirmAPIView(APIView):
         reservation.status = 'confirmed'
         reservation.save()
         return Response({'detail': 'Reservation confirmed.'}, status=status.HTTP_200_OK)
+
+class ReservationDestroyAPIView(generics.DestroyAPIView):
+    queryset = Reservation.objects.all()
+    serializer_class = ReservationSerializer
+    permission_classes = [IsAuthenticated, IsAdminUser]

@@ -1,47 +1,101 @@
 "use client";
 
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import { Search, Plus, X } from "lucide-react";
+import Link from "next/link";
+import { Plus, Search, Eye } from "lucide-react";
+import Image from "next/image";
+import Reservation from "../reservations/page";
 
-interface CarData {
-  id: number;
+// ✅ Backend-safe interface
+interface Car {
+  id: string;
   name: string;
-  image: string;
-  available: boolean;
+  model: string;
+  year: string;
+  colour: string;
+  car_type: string;
   price_per_day: number;
+  pickup_location: string;
+  status: string; // from reservation
+  rules: string;
+  seating_capacity: number;
+  luggage_capacity: number;
+  wheel_drive: string;
+  fuel_type: string;
+  transmission: string;
+  photo: string;
+  plate_number: string;
+  created_at: string;
+  updated_at: string;
 }
 
-export default function CarsListings() {
-  const [cars, setCars] = useState<CarData[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [editingCar, setEditingCar] = useState<CarData | null>(null);
-  const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+export default function CarsListingsPage() {
+  const [cars, setCars] = useState<Car[]>([]);
+  const [filteredCars, setFilteredCars] = useState<Car[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [selectedCar, setSelectedCar] = useState<Car | null>(null);
+  const [showModal, setShowModal] = useState(false);
 
   const API_BASE = process.env.NEXT_PUBLIC_API_URL || "";
 
-  // Fetch all cars
+  // ✅ Fetch reservations and normalize cars
   useEffect(() => {
-    const fetchCars = async () => {
+    async function fetchCars() {
+      setLoading(true);
       try {
-        const res = await fetch(`${API_BASE}/api/v1/car/`, { cache: "no-store" });
-        if (!res.ok) throw new Error("Failed to fetch cars");
+        const res = await fetch(`${API_BASE}/api/v1/reservations/`);
+        if (!res.ok) throw new Error("Failed to fetch reservations");
         const data = await res.json();
-        setCars(data);
+
+        const reservations = Array.isArray(data.results) ? data.results : [];
+
+        // Fetch full car details for each reservation
+       const normalizedCars = await Promise.all(
+  (reservations as Reservation[]).map(async (reservation) => {
+    try {
+      const carRes = await fetch(`${API_BASE}/api/v1/car/${reservation.car}/`);
+      if (!carRes.ok) throw new Error("Failed to fetch car");
+      const carData = await carRes.json();
+      return {
+        ...carData,
+        status: reservation.status, // use reservation status
+      };
+    } catch (err) {
+      console.error(`Error fetching car ${reservation.car}:`, err);
+      return null;
+    }
+  })
+);
+
+        const validCars = normalizedCars.filter((c) => c !== null);
+        setCars(validCars);
+        setFilteredCars(validCars);
       } catch (error) {
-        console.error("❌ Error fetching cars:", error);
-        setError("Failed to load cars.");
+        console.error("Error fetching reservations:", error);
       } finally {
         setLoading(false);
       }
-    };
+    }
+
     fetchCars();
   }, [API_BASE]);
 
-  // Business owner can delete car
-  const handleDelete = async (id: number) => {
+  // ✅ Modal view
+  async function handleView(id: string) {
+    try {
+      const res = await fetch(`${API_BASE}/api/v1/car/${id}/`);
+      if (!res.ok) throw new Error("Failed to fetch car details");
+      const data = await res.json();
+      setSelectedCar(data);
+      setShowModal(true);
+    } catch (error) {
+      console.error("Error fetching single car:", error);
+    }
+  }
+
+  // ✅ Delete car
+  async function handleDelete(id: string) {
     if (!confirm("Are you sure you want to delete this car?")) return;
 
     try {
@@ -52,269 +106,194 @@ export default function CarsListings() {
       if (!res.ok) throw new Error("Failed to delete car");
 
       setCars((prev) => prev.filter((car) => car.id !== id));
-      alert("Car deleted successfully ");
+      setFilteredCars((prev) => prev.filter((car) => car.id !== id));
+      alert("Car deleted successfully!");
     } catch (error) {
-      console.error("❌ Error deleting car:", error);
-      alert("Failed to delete car ❌");
+      console.error("Error deleting car:", error);
+      alert("An error occurred while deleting the car.");
     }
-  };
+  }
 
-  // Fetch single car data for editing
-  const handleEdit = async (id: number) => {
+  // ✅ Toggle availability
+  async function handleToggleAvailability(car: Car) {
     try {
-      const res = await fetch(`${API_BASE}/api/v1/car/${id}/`);
-      if (!res.ok) throw new Error("Failed to fetch car details");
-      const data = await res.json();
-      setEditingCar(data);
-    } catch (error) {
-      console.error("❌ Error fetching car details:", error);
-      alert("Unable to fetch car details.");
-    }
-  };
+      const newStatus = car.status === "available" ? "unavailable" : "available";
 
-  // Business owner can update car
-  const handleSave = async () => {
-    if (!editingCar) return;
-    setIsSaving(true);
-    setError(null);
-
-    try {
-      const res = await fetch(`${API_BASE}/api/v1/car/${editingCar.id}/update/`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: editingCar.name,
-          available: editingCar.available,
-          price_per_day: editingCar.price_per_day,
-          image: editingCar.image,
-        }),
+      const res = await fetch(`${API_BASE}/api/v1/car/${car.id}/update/`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus }),
       });
 
-      if (!res.ok) throw new Error("Failed to update car");
+      if (!res.ok) throw new Error("Failed to update car status");
 
-      const updated = await res.json();
-      setCars((prev) =>
-        prev.map((car) => (car.id === updated.id ? updated : car))
+      const updatedCars = cars.map((c) =>
+        c.id === car.id ? { ...c, status: newStatus } : c
       );
-
-      setEditingCar(null);
-      alert("Car updated successfully ");
+      setCars(updatedCars);
+      setFilteredCars(updatedCars);
     } catch (error) {
-      console.error("❌ Error updating car:", error);
-      setError("Failed to update car.");
-    } finally {
-      setIsSaving(false);
+      console.error("Error updating car:", error);
+      alert("Error updating car status.");
     }
-  };
+  }
 
-  // Filter cars by name
-  const filteredCars = cars.filter((car) =>
-    car.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  if (loading)
-    return (
-      <div className="flex items-center justify-center min-h-screen text-gray-600">
-        Loading cars...
-      </div>
-    );
-
-  if (error)
-    return (
-      <div className="flex items-center justify-center min-h-screen text-red-600">
-        {error}
-      </div>
-    );
+  // ✅ Search filter
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      setFilteredCars(cars);
+    } else {
+      const filtered = cars.filter((car) =>
+        car.name?.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredCars(filtered);
+    }
+  }, [searchQuery, cars]);
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      <main className="flex-1 p-6">
-        {/* Search + Add */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="relative w-full max-w-md">
-            <Search className="absolute left-3 top-3 text-gray-400" size={18} />
-            <input
-              type="text"
-              placeholder="Search cars..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-3 py-2 border rounded-full focus:outline-none focus:ring-1 focus:ring-black"
-            />
-          </div>
-
-          <button
-            onClick={() => alert("Add Car modal coming soon")}
-            className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-full hover:bg-gray-900"
-          >
-            Add Car <Plus size={16} />
-          </button>
+    <div className="p-6 bg-gray-100 min-h-screen">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
+        <div className="relative w-full sm:w-1/2 mb-4 sm:mb-0">
+          <input
+            type="text"
+            placeholder="Search cars..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-10 pr-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+          <Search className="absolute left-3 top-2.5 text-gray-500" size={18} />
         </div>
 
-        {/* Table */}
-        <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-          <div className="p-4 font-semibold text-lg border-b">Cars / Listings</div>
+        <Link
+          href="/dashboard/cars-listings/add"
+          className="flex items-center bg-black text-white px-4 py-2 rounded-full hover:bg-gray-800 transition"
+        >
+          <Plus size={18} className="mr-1" /> Add Car
+        </Link>
+      </div>
 
-          <div className="grid grid-cols-4 text-sm font-semibold px-4 py-2 bg-gray-50 border-b">
-            <span>Image</span>
-            <span>Car Name</span>
-            <span>Availability</span>
-            <span>Price / Actions</span>
-          </div>
+      {/* Table Header */}
+      <div className="bg-white rounded-t-lg shadow p-3 flex justify-between items-center font-semibold text-gray-600">
+        <div className="w-1/4">Image</div>
+        <div className="w-1/4">Car Name</div>
+        <div className="w-1/4">Availability</div>
+        <div className="w-1/4 text-right">Price per Day</div>
+      </div>
 
-          {/* Cars List */}
-          <div>
-            {filteredCars.length > 0 ? (
-              filteredCars.map((car) => (
-                <div
-                  key={car.id}
-                  className="grid grid-cols-4 items-center px-4 py-3 border-b hover:bg-gray-50 transition"
-                >
-                  {/* Car Image */}
-                  <div>
-                    <Image
-                      src={car.image || "/placeholder-car.png"}
-                      width={80}
-                      height={60}
-                      alt={car.name}
-                      className="w-20 h-14 object-cover rounded"
-                    />
-                  </div>
-
-                  {/*Car Name */}
-                  <div className="font-medium text-gray-800">{car.name}</div>
-
-                  {/* Car Availability */}
-                  <div>
-                    {car.available ? (
-                      <span className="bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full">
-                        Available
-                      </span>
-                    ) : (
-                      <span className="bg-red-100 text-red-700 text-xs px-3 py-1 rounded-full">
-                        Unavailable
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Price + Actions */}
-                  <div className="flex items-center justify-between">
-                    <span className="font-semibold">${car.price_per_day}</span>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => handleDelete(car.id)}
-                        className="px-4 py-1 border rounded-full text-sm hover:bg-gray-100"
-                      >
-                        Remove
-                      </button>
-                      <button
-                        onClick={() => handleEdit(car.id)}
-                        className="px-4 py-1 bg-black text-white rounded-full text-sm hover:bg-gray-800"
-                      >
-                        Edit
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p className="text-center py-6 text-gray-500">No cars available.</p>
-            )}
-          </div>
-        </div>
-      </main>
-
-      {/* A modal to edit a car */}
-      {editingCar && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 px-4 z-50">
-          <div className="bg-white rounded-2xl shadow-lg w-full max-w-lg p-6 relative">
-            <button
-              onClick={() => setEditingCar(null)}
-              className="absolute top-3 right-3 text-gray-500 hover:text-black"
+      {/* Cars List */}
+      <div className="bg-white shadow rounded-b-lg divide-y divide-gray-200">
+        {loading ? (
+          <div className="text-center text-gray-500 py-8">Loading cars...</div>
+        ) : filteredCars.length > 0 ? (
+          filteredCars.map((car) => (
+            <div
+              key={car.id}
+              className="flex flex-col sm:flex-row items-center justify-between p-3"
             >
-              <X size={22} />
-            </button>
+              {/* Image */}
+              <div className="w-full sm:w-1/4 flex justify-center">
+                <Image
+                  src={car.photo || "/placeholder-car.png"}
+                  alt={car.name}
+                  height={64}
+                  width={96}
+                  className="w-24 h-16 object-cover rounded"
+                />
+              </div>
 
-            <h2 className="text-xl font-semibold mb-4 text-gray-800">Edit Car</h2>
+              {/* Car Name */}
+              <div className="w-full sm:w-1/4 text-center font-medium">
+                {car.name || "Unnamed"}{" "}
+                <span className="text-gray-500 text-sm">({car.model})</span>
+              </div>
 
-            <div className="flex flex-col gap-4">
-              <label className="text-sm font-medium text-gray-700">Car Name</label>
-              <input
-                aria-label="test"
-                type="text"
-                value={editingCar.name}
-                onChange={(e) =>
-                  setEditingCar({ ...editingCar, name: e.target.value })
-                }
-                className="border rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-black"
-              />
-
-              <label className="text-sm font-medium text-gray-700">
-                Price per Day
-              </label>
-              <input
-                aria-label="Enter number"
-                type="number"
-                value={editingCar.price_per_day}
-                onChange={(e) =>
-                  setEditingCar({
-                    ...editingCar,
-                    price_per_day: parseFloat(e.target.value),
-                  })
-                }
-                className="border rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-black"
-              />
-
-              <label className="text-sm font-medium text-gray-700">Image URL</label>
-              <input
-                aria-label="Enter text"
-                type="text"
-                value={editingCar.image}
-                onChange={(e) =>
-                  setEditingCar({ ...editingCar, image: e.target.value })
-                }
-                className="border rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-black"
-              />
-
-              <label className="text-sm font-medium text-gray-700">
-                Availability
-              </label>
-              <select
-                aria-label="T/F"
-                value={editingCar.available ? "true" : "false"}
-                onChange={(e) =>
-                  setEditingCar({
-                    ...editingCar,
-                    available: e.target.value === "true",
-                  })
-                }
-                className="border rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-1 focus:ring-black"
-              >
-                <option value="true">Available</option>
-                <option value="false">Unavailable</option>
-              </select>
-
-              <div className="flex justify-end gap-3 mt-4">
+              {/* Availability */}
+              <div className="w-full sm:w-1/4 text-center">
                 <button
-                  onClick={() => setEditingCar(null)}
-                  className="border border-gray-400 text-gray-700 px-5 py-2 rounded-full hover:bg-gray-100"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleSave}
-                  disabled={isSaving}
-                  className={`px-5 py-2 rounded-full text-white ${
-                    isSaving
-                      ? "bg-gray-400 cursor-not-allowed"
-                      : "bg-black hover:bg-gray-800"
+                  onClick={() => handleToggleAvailability(car)}
+                  className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                    car.status === "available"
+                      ? "bg-green-100 text-green-700"
+                      : "bg-red-100 text-red-700"
                   }`}
                 >
-                  {isSaving ? "Saving..." : "Save Changes"}
+                  {car.status === "available" ? "Available" : "Unavailable"}
                 </button>
               </div>
+
+              {/* Price + Actions */}
+              <div className="w-full sm:w-1/4 flex flex-col sm:flex-row justify-end gap-3 items-center mt-2 sm:mt-0">
+                <span className="font-semibold">${car.price_per_day || 0}</span>
+
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleView(car.id)}
+                    className="bg-gray-200 text-gray-800 px-3 py-1 rounded hover:bg-gray-300 transition flex items-center gap-1"
+                  >
+                    <Eye size={14} /> View
+                  </button>
+
+                  <Link
+                    href={`/dashboard/cars-listings/${car.id}/update`}
+                    className="bg-black text-white px-3 py-1 rounded hover:bg-gray-800 transition"
+                  >
+                    Edit
+                  </Link>
+
+                  <button
+                    onClick={() => handleDelete(car.id)}
+                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
             </div>
+          ))
+        ) : (
+          <div className="text-center text-gray-500 py-8">No cars found.</div>
+        )}
+      </div>
+
+      {/* Car Details Modal */}
+      {showModal && selectedCar && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-[90%] max-w-lg relative">
+            <button
+              onClick={() => setShowModal(false)}
+              className="absolute top-2 right-2 text-gray-500 hover:text-black"
+            >
+              ✕
+            </button>
+
+            <h2 className="text-xl font-semibold mb-4">
+              {selectedCar.name} ({selectedCar.model})
+            </h2>
+
+            <Image
+              src={selectedCar.photo || "/placeholder-car.png"}
+              alt={selectedCar.name}
+              height={160}
+              width={240}
+              className="w-full h-40 object-cover rounded mb-4"
+            />
+
+            <p>
+              <strong>Year:</strong> {selectedCar.year}
+            </p>
+            <p>
+              <strong>Type:</strong> {selectedCar.car_type}
+            </p>
+            <p>
+              <strong>Fuel:</strong> {selectedCar.fuel_type}
+            </p>
+            <p>
+              <strong>Wheel Drive:</strong> {selectedCar.wheel_drive}
+            </p>
+            <p>
+              <strong>Rules:</strong> {selectedCar.rules || "N/A"}
+            </p>
           </div>
         </div>
       )}

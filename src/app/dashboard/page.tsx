@@ -4,8 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import {
-  Menu,
-  X,
+  
   Search,
 } from "lucide-react";
 import { Line } from "react-chartjs-2";
@@ -50,7 +49,6 @@ interface Reservation {
 }
 
 export default function Dashboard() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activities, setActivities] = useState<Activity[]>([]);
   const [revenueData, setRevenueData] = useState<Revenue[]>([]);
   const [carsListed, setCarsListed] = useState<number>(0);
@@ -120,12 +118,7 @@ export default function Dashboard() {
           <h1 className="text-xl md:text-2xl font-semibold">
             Welcome Back, See how your fleets are performing
           </h1>
-          <button
-            className="md:hidden p-2 border rounded-md"
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          >
-            {isSidebarOpen ? <X /> : <Menu />}
-          </button>
+         
         </div>
 
         <div className="relative mb-6">
