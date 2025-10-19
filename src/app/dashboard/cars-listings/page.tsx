@@ -68,7 +68,7 @@ export default function CarsListingsPage() {
 
         {/* Add Car Button */}
         <Link
-          href="/dashboard/cars-listings/add"
+          href="/app/dashboard/cars-listings/add"
           className="flex items-center bg-black text-white px-4 py-2 rounded-full hover:bg-gray-800 transition"
         >
           <Plus size={18} className="mr-1" /> Add Car
@@ -96,8 +96,8 @@ export default function CarsListingsPage() {
                 <Image
                   src={car.image || "/placeholder-car.png"}
                   alt={car.name}
-                  height={0}
-                  width={0}
+                  height={30}
+                  width={30}
                   className="w-24 h-16 object-cover rounded"
                 />
               </div>
@@ -136,7 +136,7 @@ export default function CarsListingsPage() {
             </div>
           ))
         ) : (
-          <div className="text-center text-gray-500 py-8">No car found.</div>
+          <div className="text-center text-gray-500 py-8">No cars found.</div>
         )}
       </div>
     </div>
