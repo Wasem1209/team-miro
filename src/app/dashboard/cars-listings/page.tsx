@@ -2,10 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Plus, Search } from "lucide-react";
+import { Plus, Search, Eye } from "lucide-react";
 import Image from "next/image";
 
-// Define Car interface (matches backend schema)
+// ✅ Backend-safe interface
 interface Car {
   id: string;
   name: string;
@@ -15,7 +15,7 @@ interface Car {
   car_type: string;
   price_per_day: number;
   pickup_location: string;
-  status: "available" | "unavailable";
+  status: string; // <-- allow any string from backend safely
   rules: string;
   seating_capacity: number;
   luggage_capacity: number;
@@ -33,26 +33,37 @@ export default function CarsListingsPage() {
   const [filteredCars, setFilteredCars] = useState<Car[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
+  const [selectedCar, setSelectedCar] = useState<Car | null>(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL || "";
 
   // ✅ Fetch all cars
   useEffect(() => {
     async function fetchCars() {
       setLoading(true);
       try {
-        const response = await fetch("/api/v1/car/");
+        const response = await fetch(`${API_BASE}/api/v1/car/`);
         if (!response.ok) throw new Error("Failed to fetch cars");
-
         const data = await response.json();
 
-        // If backend returns { results: [...] }
         const carList = Array.isArray(data.results)
           ? data.results
           : Array.isArray(data)
           ? data
           : [];
 
-        setCars(carList);
-        setFilteredCars(carList);
+        // Normalize status
+        const normalizedCars = carList.map((car: Car) => ({
+          ...car,
+          status:
+            car.status?.toLowerCase() === "available"
+              ? "available"
+              : "unavailable",
+        }));
+
+        setCars(normalizedCars);
+        setFilteredCars(normalizedCars);
       } catch (error) {
         console.error("Error fetching cars:", error);
       } finally {
@@ -61,14 +72,27 @@ export default function CarsListingsPage() {
     }
 
     fetchCars();
-  }, []);
+  }, [API_BASE]);
 
-  // ✅ Handle delete
+  // ✅ Fetch single car by ID (for modal view)
+  async function handleView(id: string) {
+    try {
+      const res = await fetch(`${API_BASE}/api/v1/car/${id}/`);
+      if (!res.ok) throw new Error("Failed to fetch car details");
+      const data = await res.json();
+      setSelectedCar(data);
+      setShowModal(true);
+    } catch (error) {
+      console.error("Error fetching single car:", error);
+    }
+  }
+
+  // ✅ Delete car
   async function handleDelete(id: string) {
     if (!confirm("Are you sure you want to delete this car?")) return;
 
     try {
-      const res = await fetch(`/api/v1/car/${id}/delete/`, {
+      const res = await fetch(`${API_BASE}/api/v1/car/${id}/delete/`, {
         method: "DELETE",
       });
 
@@ -83,13 +107,38 @@ export default function CarsListingsPage() {
     }
   }
 
+  // ✅ Inline status toggle (update car)
+  async function handleToggleAvailability(car: Car) {
+    try {
+      const newStatus =
+        car.status === "available" ? "unavailable" : "available";
+
+      const res = await fetch(`${API_BASE}/api/v1/car/${car.id}/update/`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus }),
+      });
+
+      if (!res.ok) throw new Error("Failed to update car status");
+
+      const updatedCars = cars.map((c) =>
+        c.id === car.id ? { ...c, status: newStatus } : c
+      );
+      setCars(updatedCars);
+      setFilteredCars(updatedCars);
+    } catch (error) {
+      console.error("Error updating car:", error);
+      alert("Error updating car status.");
+    }
+  }
+
   // ✅ Search filter
   useEffect(() => {
     if (searchQuery.trim() === "") {
       setFilteredCars(cars);
     } else {
       const filtered = cars.filter((car) =>
-        car.name.toLowerCase().includes(searchQuery.toLowerCase())
+        car.name?.toLowerCase().includes(searchQuery.toLowerCase())
       );
       setFilteredCars(filtered);
     }
@@ -99,7 +148,6 @@ export default function CarsListingsPage() {
     <div className="p-6 bg-gray-100 min-h-screen">
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
-        {/* Search bar */}
         <div className="relative w-full sm:w-1/2 mb-4 sm:mb-0">
           <input
             type="text"
@@ -111,7 +159,6 @@ export default function CarsListingsPage() {
           <Search className="absolute left-3 top-2.5 text-gray-500" size={18} />
         </div>
 
-        {/* Add Car Button */}
         <Link
           href="/dashboard/cars-listings/add"
           className="flex items-center bg-black text-white px-4 py-2 rounded-full hover:bg-gray-800 transition"
@@ -138,7 +185,7 @@ export default function CarsListingsPage() {
               key={car.id}
               className="flex flex-col sm:flex-row items-center justify-between p-3"
             >
-              {/* Car Image */}
+              {/* Image */}
               <div className="w-full sm:w-1/4 flex justify-center">
                 <Image
                   src={car.photo || "/placeholder-car.png"}
@@ -149,7 +196,7 @@ export default function CarsListingsPage() {
                 />
               </div>
 
-              {/* Car Name and Model */}
+              {/* Car Name */}
               <div className="w-full sm:w-1/4 text-center font-medium">
                 {car.name || "Unnamed"}{" "}
                 <span className="text-gray-500 text-sm">({car.model})</span>
@@ -157,7 +204,8 @@ export default function CarsListingsPage() {
 
               {/* Availability */}
               <div className="w-full sm:w-1/4 text-center">
-                <span
+                <button
+                  onClick={() => handleToggleAvailability(car)}
                   className={`px-3 py-1 rounded-full text-sm font-semibold ${
                     car.status === "available"
                       ? "bg-green-100 text-green-700"
@@ -165,7 +213,7 @@ export default function CarsListingsPage() {
                   }`}
                 >
                   {car.status === "available" ? "Available" : "Unavailable"}
-                </span>
+                </button>
               </div>
 
               {/* Price + Actions */}
@@ -173,12 +221,20 @@ export default function CarsListingsPage() {
                 <span className="font-semibold">${car.price_per_day || 0}</span>
 
                 <div className="flex gap-2">
+                  <button
+                    onClick={() => handleView(car.id)}
+                    className="bg-gray-200 text-gray-800 px-3 py-1 rounded hover:bg-gray-300 transition flex items-center gap-1"
+                  >
+                    <Eye size={14} /> View
+                  </button>
+
                   <Link
                     href={`/dashboard/cars-listings/${car.id}/update`}
                     className="bg-black text-white px-3 py-1 rounded hover:bg-gray-800 transition"
                   >
                     Edit
                   </Link>
+
                   <button
                     onClick={() => handleDelete(car.id)}
                     className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
@@ -193,6 +249,48 @@ export default function CarsListingsPage() {
           <div className="text-center text-gray-500 py-8">No cars found.</div>
         )}
       </div>
+
+      {/* Car Details Modal */}
+      {showModal && selectedCar && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-[90%] max-w-lg relative">
+            <button
+              onClick={() => setShowModal(false)}
+              className="absolute top-2 right-2 text-gray-500 hover:text-black"
+            >
+              ✕
+            </button>
+
+            <h2 className="text-xl font-semibold mb-4">
+              {selectedCar.name} ({selectedCar.model})
+            </h2>
+
+            <Image
+              src={selectedCar.photo || "/placeholder-car.png"}
+              alt={selectedCar.name}
+              height={160}
+              width={240}
+              className="w-full h-40 object-cover rounded mb-4"
+            />
+
+            <p>
+              <strong>Year:</strong> {selectedCar.year}
+            </p>
+            <p>
+              <strong>Type:</strong> {selectedCar.car_type}
+            </p>
+            <p>
+              <strong>Fuel:</strong> {selectedCar.fuel_type}
+            </p>
+            <p>
+              <strong>Wheel Drive:</strong> {selectedCar.wheel_drive}
+            </p>
+            <p>
+              <strong>Rules:</strong> {selectedCar.rules || "N/A"}
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
