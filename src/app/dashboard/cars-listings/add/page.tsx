@@ -6,36 +6,25 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
-const softReserveOptions = [
-  "15 mins",
-  "30 mins",
-  "1 hr",
-  "2 hrs",
-  "4 hrs",
-  "8 hrs",
-  "24 hrs",
-];
 
 const years = Array.from({ length: 30 }, (_, i) => 2025 - i);
 
 export default function AddCarPage(): JSX.Element {
   const router = useRouter();
-
-  // For the base api
   const API_BASE = process.env.NEXT_PUBLIC_API_URL || "";
 
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const [form, setForm] = useState({
-    make: "",
+    name: "",
     model: "",
-    type: "",
+    car_type: "",
     year: "",
-    seat_capacity: "",
+    seating_capacity: "",
     fuel_type: "",
-    ac: "",
-    luggage: "",
+    air_condition: "",
+    luggage_capacity: "",
     wheel_drive: "",
     price_per_day: "",
     available_start: "",
@@ -71,18 +60,18 @@ export default function AddCarPage(): JSX.Element {
     }
   }
 
-  // Simple validation
+  // Validate required fields
   function validate() {
-    if (!form.make.trim()) return "Please enter the car make.";
+    if (!form.name.trim()) return "Please enter the car name.";
     if (!form.model.trim()) return "Please enter the car model.";
     if (!form.price_per_day || Number.isNaN(Number(form.price_per_day)))
       return "Please enter a valid price per day.";
-    if (!form.available_start) return "Please choose availability start date.";
-    if (!form.available_end) return "Please choose availability end date.";
+    if (!form.year) return "Please select the year.";
+    if (!form.car_type) return "Please enter the car type.";
     return null;
   }
 
-  // Submition to the backend
+  // Submit to backend
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setErrorMsg(null);
@@ -100,12 +89,13 @@ export default function AddCarPage(): JSX.Element {
       const payload = new FormData();
       Object.entries(form).forEach(([key, value]) => payload.append(key, value));
 
+      // use "photo" if backend expects that for image uploads
       if (imageFile) {
-        payload.append("image", imageFile);
+        payload.append("photo", imageFile);
       }
 
-      // Post to the backend
-      const res = await fetch(`${API_BASE}/api/v1/car/new/`, {
+      const res = await fetch(`${API_BASE}/api/v1/car/new/`
+        , {
         method: "POST",
         body: payload,
       });
@@ -115,8 +105,8 @@ export default function AddCarPage(): JSX.Element {
         throw new Error(text || "Failed to add car");
       }
 
-      setSuccessMsg(" Car added successfully!");
-      setTimeout(() => router.push("/dashboard/cars-listings"), 1000);
+      setSuccessMsg("Car added successfully!");
+      setTimeout(() => router.push("/app/dashboard/cars-listings"), 1500);
     } catch (err) {
       if (err instanceof Error)
         setErrorMsg(err.message || "An error occurred while adding the car");
@@ -132,29 +122,28 @@ export default function AddCarPage(): JSX.Element {
           {/* Back link */}
           <div className="mb-4">
             <Link
-              href="/dashboard/cars-listings"
+              href="/app/dashboard/cars-listings"
               className="inline-flex items-center gap-2 text-gray-700 hover:underline"
             >
               <ArrowLeft size={18} /> Back to Cars/Listings
             </Link>
           </div>
 
-          {/* Form */}
           <div className="bg-white border rounded-lg p-6">
             <h1 className="text-xl md:text-2xl font-semibold mb-4">Add Car</h1>
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Left column */}
+                {/* LEFT COLUMN */}
                 <div className="space-y-4">
-                  {/* Image */}
+                  {/* Image Upload */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Upload Picture
                     </label>
                     <div className="flex items-center gap-4">
                       <label
-                        htmlFor="image"
+                        htmlFor="photo"
                         className="flex-1 cursor-pointer bg-gray-50 border border-gray-200 rounded px-4 py-3 flex items-center justify-between"
                       >
                         <span
@@ -165,8 +154,8 @@ export default function AddCarPage(): JSX.Element {
                         <span className="text-gray-500">📷</span>
                       </label>
                       <input
-                        id="image"
-                        name="image"
+                        id="photo"
+                        name="photo"
                         type="file"
                         accept="image/*"
                         onChange={handleFileChange}
@@ -189,7 +178,7 @@ export default function AddCarPage(): JSX.Element {
                     )}
                   </div>
 
-                  {/* A Model */}
+                  {/* Model */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Model
@@ -198,7 +187,7 @@ export default function AddCarPage(): JSX.Element {
                       name="model"
                       value={form.model}
                       onChange={handleInputChange}
-                      placeholder="Eg. Camry"
+                      placeholder="e.g. Camry"
                       className="w-full rounded px-4 py-3 bg-gray-50 border border-gray-200 focus:outline-none"
                     />
                   </div>
@@ -209,33 +198,19 @@ export default function AddCarPage(): JSX.Element {
                       Year
                     </label>
                     <select
-                      aria-label="Select year"
+                      aria-label="year"
                       name="year"
                       value={form.year}
                       onChange={handleInputChange}
                       className="w-full rounded px-4 py-3 bg-white border border-gray-200 focus:outline-none"
                     >
-                      <option value="">Eg. 2021</option>
+                      <option value="">Select year</option>
                       {years.map((y) => (
                         <option key={y} value={y}>
                           {y}
                         </option>
                       ))}
                     </select>
-                  </div>
-
-                  {/* Seat Capacity */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Seat Capacity
-                    </label>
-                    <input
-                      name="seat_capacity"
-                      value={form.seat_capacity}
-                      onChange={handleInputChange}
-                      placeholder="Eg. 2"
-                      className="w-full rounded px-4 py-3 bg-gray-50 border border-gray-200 focus:outline-none"
-                    />
                   </div>
 
                   {/* Fuel Type */}
@@ -247,7 +222,7 @@ export default function AddCarPage(): JSX.Element {
                       name="fuel_type"
                       value={form.fuel_type}
                       onChange={handleInputChange}
-                      placeholder="Eg. Petrol"
+                      placeholder="e.g. Petrol"
                       className="w-full rounded px-4 py-3 bg-gray-50 border border-gray-200 focus:outline-none"
                     />
                   </div>
@@ -261,81 +236,71 @@ export default function AddCarPage(): JSX.Element {
                       name="price_per_day"
                       value={form.price_per_day}
                       onChange={handleInputChange}
-                      placeholder="Eg. $1000"
+                      placeholder="e.g. 100"
                       className="w-full rounded px-4 py-3 bg-gray-50 border border-gray-200 focus:outline-none"
-                    />
-                  </div>
-
-                  {/* Availability End Date */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Availability End Date
-                    </label>
-                    <input
-                      aria-label="Date"
-                      type="date"
-                      name="available_end"
-                      value={form.available_end}
-                      onChange={handleInputChange}
-                      className="w-full rounded px-4 py-3 bg-white border border-gray-200 focus:outline-none"
                     />
                   </div>
                 </div>
 
-                {/* Right column */}
+                {/* RIGHT COLUMN */}
                 <div className="space-y-4">
+                  {/* Name */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Make
+                      Car Name
                     </label>
                     <input
-                      name="make"
-                      value={form.make}
+                      name="name"
+                      value={form.name}
                       onChange={handleInputChange}
-                      placeholder="Eg. Toyota"
+                      placeholder="e.g. Toyota Corolla"
                       className="w-full rounded px-4 py-3 bg-gray-50 border border-gray-200 focus:outline-none"
                     />
                   </div>
 
+                  {/* Type */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Type
+                      Car Type
                     </label>
                     <input
-                      name="type"
-                      value={form.type}
+                      name="car_type"
+                      value={form.car_type}
                       onChange={handleInputChange}
-                      placeholder="Eg. Sedan"
+                      placeholder="e.g. Sedan"
                       className="w-full rounded px-4 py-3 bg-gray-50 border border-gray-200 focus:outline-none"
                     />
                   </div>
 
+                  {/* Seats */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Air Conditioning (A/C)
+                      Seating Capacity
                     </label>
                     <input
-                      name="ac"
-                      value={form.ac}
+                      name="seating_capacity"
+                      value={form.seating_capacity}
                       onChange={handleInputChange}
-                      placeholder="Eg. Dual-Zone Automatic"
+                      placeholder="e.g. 4"
                       className="w-full rounded px-4 py-3 bg-gray-50 border border-gray-200 focus:outline-none"
                     />
                   </div>
 
+                  {/* Luggage */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Luggage Capacity
                     </label>
                     <input
-                      name="luggage"
-                      value={form.luggage}
+                      name="luggage_capacity"
+                      value={form.luggage_capacity}
                       onChange={handleInputChange}
-                      placeholder="Eg. 100 liters"
+                      placeholder="e.g. 100 liters"
                       className="w-full rounded px-4 py-3 bg-gray-50 border border-gray-200 focus:outline-none"
                     />
                   </div>
 
+                  {/* Wheel Drive */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Wheel Drive
@@ -344,43 +309,9 @@ export default function AddCarPage(): JSX.Element {
                       name="wheel_drive"
                       value={form.wheel_drive}
                       onChange={handleInputChange}
-                      placeholder="Eg. AWD"
+                      placeholder="e.g. AWD"
                       className="w-full rounded px-4 py-3 bg-gray-50 border border-gray-200 focus:outline-none"
                     />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Availability Start Date
-                    </label>
-                    <input
-                      aria-label="Dtae"
-                      type="date"
-                      name="available_start"
-                      value={form.available_start}
-                      onChange={handleInputChange}
-                      className="w-full rounded px-4 py-3 bg-white border border-gray-200 focus:outline-none"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Soft Reserve Time Limit
-                    </label>
-                    <select
-                      aria-label="Softreserve limit"
-                      name="soft_reserve_limit"
-                      value={form.soft_reserve_limit}
-                      onChange={handleInputChange}
-                      className="w-full rounded px-4 py-3 bg-white border border-gray-200 focus:outline-none"
-                    >
-                      <option value="">Select time limit</option>
-                      {softReserveOptions.map((opt) => (
-                        <option key={opt} value={opt}>
-                          {opt}
-                        </option>
-                      ))}
-                    </select>
                   </div>
                 </div>
               </div>
@@ -388,23 +319,21 @@ export default function AddCarPage(): JSX.Element {
               {/* Rules */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Add Rules here
+                  Add Rules
                 </label>
                 <textarea
                   name="rules"
                   value={form.rules}
                   onChange={handleInputChange}
-                  placeholder="Add Rules here"
                   rows={6}
+                  placeholder="Add specific car usage rules here"
                   className="w-full rounded px-4 py-3 bg-gray-50 border border-gray-200 focus:outline-none"
                 />
               </div>
 
-              {/* Status messages */}
               {errorMsg && <p className="text-sm text-red-600">{errorMsg}</p>}
               {successMsg && <p className="text-sm text-green-600">{successMsg}</p>}
 
-              {/* Submit */}
               <div>
                 <button
                   type="submit"
