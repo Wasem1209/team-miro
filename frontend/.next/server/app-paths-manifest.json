@@ -1,7 +1,0 @@
-{
-  "/api/available-cars/route": "app/api/available-cars/route.js",
-  "/api/available-cars/[id]/route": "app/api/available-cars/[id]/route.js",
-  "/page": "app/page.js",
-  "/soft-reserve/page": "app/soft-reserve/page.js",
-  "/softReserveForm/page": "app/softReserveForm/page.js"
-}
