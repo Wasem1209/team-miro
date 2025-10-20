@@ -1,12 +1,9 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest, context: { params: { id: string } }) {
   try {
-    const { id } = params;
-    
+    const { id } = context.params;
+
     const response = await fetch(
       `https://driveeasy.pythonanywhere.com/api/v1/car/${id}`,
       {
@@ -26,9 +23,9 @@ export async function GET(
   } catch (error) {
     console.error('Error fetching car details:', error);
     return NextResponse.json(
-      { 
+      {
         error: 'Failed to fetch car details',
-        message: error instanceof Error ? error.message : 'Unknown error'
+        message: error instanceof Error ? error.message : 'Unknown error',
       },
       { status: 500 }
     );
