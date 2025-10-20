@@ -1,0 +1,176 @@
+{
+  "version": 3,
+  "pages404": true,
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/api/available-cars/[id]",
+      "regex": "^/api/available\\-cars/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/available\\-cars/(?<nxtPid>[^/]+?)(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/auth/Signin",
+      "regex": "^/auth/Signin(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/auth/Signin(?:/)?$"
+    },
+    {
+      "page": "/auth/Signup",
+      "regex": "^/auth/Signup(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/auth/Signup(?:/)?$"
+    },
+    {
+      "page": "/cars",
+      "regex": "^/cars(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/cars(?:/)?$"
+    },
+    {
+      "page": "/dashboard",
+      "regex": "^/dashboard(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard(?:/)?$"
+    },
+    {
+      "page": "/dashboard/cars-listings",
+      "regex": "^/dashboard/cars\\-listings(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/cars\\-listings(?:/)?$"
+    },
+    {
+      "page": "/dashboard/cars-listings/add",
+      "regex": "^/dashboard/cars\\-listings/add(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/cars\\-listings/add(?:/)?$"
+    },
+    {
+      "page": "/dashboard/reports",
+      "regex": "^/dashboard/reports(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/reports(?:/)?$"
+    },
+    {
+      "page": "/dashboard/reservations",
+      "regex": "^/dashboard/reservations(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/reservations(?:/)?$"
+    },
+    {
+      "page": "/dashboard/reservations/create+",
+      "regex": "^/dashboard/reservations/create\\+(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/reservations/create\\+(?:/)?$"
+    },
+    {
+      "page": "/favicon.ico",
+      "regex": "^/favicon\\.ico(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/favicon\\.ico(?:/)?$"
+    },
+    {
+      "page": "/home-folder",
+      "regex": "^/home\\-folder(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/home\\-folder(?:/)?$"
+    },
+    {
+      "page": "/pages/profile",
+      "regex": "^/pages/profile(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/pages/profile(?:/)?$"
+    },
+    {
+      "page": "/pages/reservations",
+      "regex": "^/pages/reservations(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/pages/reservations(?:/)?$"
+    },
+    {
+      "page": "/pickupreturn",
+      "regex": "^/pickupreturn(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/pickupreturn(?:/)?$"
+    },
+    {
+      "page": "/Reservation-summary",
+      "regex": "^/Reservation\\-summary(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/Reservation\\-summary(?:/)?$"
+    },
+    {
+      "page": "/soft-reserve",
+      "regex": "^/soft\\-reserve(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/soft\\-reserve(?:/)?$"
+    },
+    {
+      "page": "/softReserveForm",
+      "regex": "^/softReserveForm(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/softReserveForm(?:/)?$"
+    },
+    {
+      "page": "/UserDashboard/Reservation",
+      "regex": "^/UserDashboard/Reservation(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/UserDashboard/Reservation(?:/)?$"
+    },
+    {
+      "page": "/userReserveForm",
+      "regex": "^/userReserveForm(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/userReserveForm(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSuffix": ".prefetch.rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments"
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}

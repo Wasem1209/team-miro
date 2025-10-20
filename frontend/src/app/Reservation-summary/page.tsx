@@ -141,6 +141,7 @@ export default function AfterSignUpPage() {
               Preferred Pick-up time
             </label>
             <input
+              aria-label='Text'
               type="text"
               value={reservationData.preferredPickupTime}
               readOnly
@@ -154,6 +155,7 @@ export default function AfterSignUpPage() {
               Preferred Return time
             </label>
             <input
+              aria-label='Text'
               type="text"
               value={reservationData.preferredReturnTime}
               readOnly
