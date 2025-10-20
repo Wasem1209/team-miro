@@ -11,7 +11,6 @@ const years = Array.from({ length: 30 }, (_, i) => 2025 - i);
 
 export default function AddCarPage(): JSX.Element {
   const router = useRouter();
-  const API_BASE = process.env.NEXT_PUBLIC_API_URL || "";
 
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -94,7 +93,7 @@ export default function AddCarPage(): JSX.Element {
         payload.append("photo", imageFile);
       }
 
-      const res = await fetch(`${API_BASE}/api/v1/car/new/`
+      const res = await fetch(`https://driveeasy.pythonanywhere.com/api/v1/car/new/`
         , {
         method: "POST",
         body: payload,
