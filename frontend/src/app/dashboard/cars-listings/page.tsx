@@ -6,7 +6,7 @@ import { Plus, Search, Eye } from "lucide-react";
 import Image from "next/image";
 import Reservation from "../reservations/page";
 
-// ✅ Backend-safe interface
+// Backend-safe interface
 interface Car {
   id: string;
   name: string;
@@ -29,7 +29,7 @@ interface Car {
   updated_at: string;
 }
 
-export default function CarsListingsPage() {
+export default function CarsListings() {
   const [cars, setCars] = useState<Car[]>([]);
   const [filteredCars, setFilteredCars] = useState<Car[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -44,7 +44,7 @@ export default function CarsListingsPage() {
     async function fetchCars() {
       setLoading(true);
       try {
-        const res = await fetch(`${API_BASE}https://driveeasy.pythonanywhere.com/api/v1/car/`);
+        const res = await fetch(`${API_BASE}/api/v1/car/`);
         if (!res.ok) throw new Error("Failed to fetch reservations");
         const data = await res.json();
 
@@ -54,7 +54,7 @@ export default function CarsListingsPage() {
        const normalizedCars = await Promise.all(
   (reservations as Reservation[]).map(async (reservation) => {
     try {
-      const carRes = await fetch(`${API_BASE}https://driveeasy.pythonanywhere.com/api/v1/car/${reservation.car}/`);
+      const carRes = await fetch(`${API_BASE}/api/v1/car/${reservation.car}/`);
       if (!carRes.ok) throw new Error("Failed to fetch car");
       const carData = await carRes.json();
       return {
@@ -84,7 +84,7 @@ export default function CarsListingsPage() {
   //Modal view
   async function handleView(id: string) {
     try {
-      const res = await fetch(`${API_BASE}https://driveeasy.pythonanywhere.com/api/v1/car/${id}/`);
+      const res = await fetch(`${API_BASE}/api/v1/car/${id}/`);
       if (!res.ok) throw new Error("Failed to fetch car details");
       const data = await res.json();
       setSelectedCar(data);
@@ -99,7 +99,7 @@ export default function CarsListingsPage() {
     if (!confirm("Are you sure you want to delete this car?")) return;
 
     try {
-      const res = await fetch(`${API_BASE}https://driveeasy.pythonanywhere.com/api/v1/car/${id}/delete/`, {
+      const res = await fetch(`${API_BASE}/api/v1/car/${id}/delete/`, {
         method: "DELETE",
       });
 
